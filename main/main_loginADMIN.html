@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="../imagenes/logo.png">
+
+</head>
+<body>
+
+    <div class="flex shadow-lg items-center px-16 h-28">
+
+        <a href="../main/main_loginADMIN.html">
+            <img class="h-24" 
+            src="../imagenes/logo2.png" alt="Logo del controlador de gastos">
+        </a>
+
+        <h1 class="absolute left-1/2 transform -translate-x-1/2 text-2xl font-bold">
+            LISTA DE USUARIOS
+        </h1>
+
+        <div class="ml-auto flex items-center gap-3">
+            <span class="bg-gray-300 text-gray-800 px-4 py-1 rounded-full text-xs font-semibold">
+                ADMIN
+            </span>
+
+            <button class="bg-red-500 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-red-600 transition">
+                Cerrar sesión
+            </button>
+        </div>
+
+    </div>
+
+    <div class="flex">
+
+        <aside class="w-60 p-6 border-r-4 flex flex-col gap-4 shadow-r">
+            
+            <button class="bg-black text-white p-2 rounded-3xl mt-10 font-bold text-sm mb-3 hover:bg-gray-700 transition">
+                CREAR
+            </button>
+
+            <button class="bg-yellow-500 text-black p-2 rounded-3xl mt-4 font-bold text-sm mb-3 hover:bg-yellow-600 transition">
+                EDITAR
+            </button>
+
+            <button class="bg-purple-500 text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-3 hover:bg-purple-600 transition">
+                HISTORIAL
+            </button>
+
+            <button class="bg-red-500 text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-72 hover:bg-red-600 transition">
+                ELIMINAR
+            </button>
+
+        </aside>
+
+
+        <div class="flex items-start gap-4 ml-auto mt-8 mr-10 h-10">
+
+            <span class="font-semibold">
+                Filtrar por:
+            </span>
+
+            <select class="bg-gray-100 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <option>poner rol</option>
+                <option>poner rol</option>
+                <option>poner rol</option>
+            </select>
+
+            <button class="bg-gray-300 text-black p-2 rounded-3xl font-bold text-xs hover:bg-gray-400 transition">
+                Aplicar
+            </button>
+        
+        </div>
+
+
+    </div>
+    
+
+        
+</body>
+</html>
