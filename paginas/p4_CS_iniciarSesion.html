@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/png" href="../imagenes/logo.png">
+</head>
+
+<body>
+
+  <div class="flex shadow-lg items-center justify-between">
+    <a href="../main/main_NOlogin.html">
+      <img class="h-24 my-3 ml-16"
+           src="../imagenes/logo2.png"
+           alt="Logo del controlador de gastos">
+    </a>
+  </div>
+
+  <div class="flex justify-center mt-20">
+    <div class="border border-gray-300 grid gap-4 grid-cols-1 p-4 w-96 items-center">
+
+      <h1 class="font-bold text-2xl text-center">Iniciar Sesión</h1>
+      <p>Ingresa con tu correo y contraseña</p>
+
+      <form action="">
+        <div>Correo Electrónico</div>
+        <input
+          class="w-full mt-1 border-2 py-3 rounded border-gray-300 placeholder:text-gray-400 px-4 text-md"
+          placeholder="Ingresa tu correo electrónico"
+          type="email"
+          name="correo"
+          id="correo"
+        >
+
+        <div class="mt-4">Contraseña</div>
+        <input
+          class="w-full mt-1 border-2 py-3 rounded border-gray-300 placeholder:text-gray-400 px-4 text-md"
+          placeholder="Ingresa tu contraseña"
+          type="password"
+          name="contrasena"
+          id="contrasena"
+        >
+
+        <div class="mt-3 text-right">
+          <a href="./p23_JR_cambiarContraseña.html"
+             class="text-sm text-gray-600 hover:text-black transition">
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
+      </form>
+
+      <a href="../main/main_loginUSER.html"
+         class="bg-black text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-2 hover:bg-gray-800 transition text-center">
+        INICIAR SESIÓN
+      </a>
+
+      <p class="text-sm text-center text-gray-600">
+        ¿No tienes cuenta?
+        <a href="./p5_JR_registrarse.html" class="font-semibold text-black hover:underline">
+          Regístrate
+        </a>
+      </p>
+
+    </div>
+  </div>
+
+</body>
+</html>
