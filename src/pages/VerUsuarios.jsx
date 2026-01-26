@@ -17,15 +17,15 @@ function VerUsuarios() {
 
         <tbody>
           <tr>
-            <td className="border p-2">Juan Pérez</td>
-            <td className="border p-2">juan@correo.com</td>
+            <td className="border p-2">Hernan Quintana</td>
+            <td className="border p-2">hernanquint@gmail.com</td>
             <td className="border p-2">Administrador</td>
             <td className="border p-2 text-green-600">Activo</td>
           </tr>
 
           <tr className="bg-gray-50">
-            <td className="border p-2">María López</td>
-            <td className="border p-2">maria@correo.com</td>
+            <td className="border p-2">Jesus Pisconte</td>
+            <td className="border p-2">jesuspisc@gmail.com</td>
             <td className="border p-2">Usuario</td>
             <td className="border p-2 text-red-600">Inactivo</td>
           </tr>
