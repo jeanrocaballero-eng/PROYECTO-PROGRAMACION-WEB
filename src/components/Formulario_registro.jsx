@@ -10,16 +10,13 @@ function Formulario_registro() {
 
     
     return (
-        <div className="flex justify-center mt-20">
-
-            <div className="border border-gray-300 grid gap-4 grid-cols-1 p-4 w-96 items-center">
-
+            <div>
                 <h1 className="font-bold text-2xl text-center">Registro</h1>
-                <p>Proporcione los datos correspondientes</p>
+                <p className="mt-4">Proporcione los datos correspondientes</p>
 
                 <form>
 
-                    <div>Nombre</div>
+                    <div className="mt-4">Nombre</div>
                     <input
                         className="w-full mt-1 border-2 py-3 rounded border-gray-300 px-4"
                         placeholder="Ingresa tu nombre"
@@ -62,13 +59,11 @@ function Formulario_registro() {
 
                 <button
                 type="button"
-                className="bg-black text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-3 hover:bg-gray-800 transition">
+                className="bg-black text-white p-2 rounded-3xl mt-8 font-bold text-sm mb-3 hover:bg-gray-800 transition w-full">
                     REGISTRARME
                 </button>
 
             </div>
-            
-        </div>
     );
 }
 
