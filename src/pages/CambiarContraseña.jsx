@@ -93,8 +93,7 @@ function CambiarContraseña() {
                         type="button"
                         onClick={handleCambiarContraseña}
                         disabled={!botónHabilitado}
-                        className="bg-black text-white p-2 rounded-3xl mt-4 font-bold text-sm hover:bg-gray-800 transition"
-                    >
+                        className="bg-black text-white p-2 rounded-3xl mt-4 font-bold text-sm hover:bg-gray-800 transition">
                         CAMBIAR CONTRASEÑA
                     </button>
                 </div>

@@ -76,10 +76,12 @@ function LoginPage() {
                     </div>
 
                     <div className="mt-3 text-right">
-                    <a href="./p23_JR_cambiarContraseña.html"
-                        className="text-sm text-gray-600 hover:text-black transition">
-                        ¿Olvidaste tu contraseña?
-                    </a>
+                    <button 
+                        type="button"
+                        onClick={() => navigate("/CorreoContraseña")}
+                        className="text-sm text-gray-600 hover:text-black transition hover:underline">
+                    ¿Olvidaste tu contraseña?
+                    </button>
                     </div>
                 </div>
 
@@ -88,7 +90,7 @@ function LoginPage() {
                 <button
                     type="button"
                     onClick={handleLogin}
-                    className="bg-black text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-2 hover:bg-gray-800 transition text-center w-full"
+                    className="bg-black text-white p-2 rounded-3xl font-bold text-sm mb-2 hover:bg-gray-800 transition text-center w-full"
                 >
                     INICIAR SESIÓN
                 </button>

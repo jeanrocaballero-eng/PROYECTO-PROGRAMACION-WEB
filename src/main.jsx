@@ -10,9 +10,8 @@ import EliminarEgreso from './pages/EliminarEgreso';
 import EditarEgreso from './pages/EditarEgreso';
 import CambiarContraseña from './pages/CambiarContraseña';
 import ContraseñaCambiada from './pages/ContraseñaCambiada';
+import CorreoContraseña from './pages/CorreoContraseña';
 import { HashRouter, Routes, Route } from "react-router-dom";
-
-
 
 
 createRoot(document.getElementById('root')).render(
@@ -30,6 +29,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/EditarEgreso" element={<EditarEgreso />} />
         <Route path="/CambiarContraseña" element={<CambiarContraseña />} />
         <Route path="/ContraseñaCambiada" element={<ContraseñaCambiada />} />
+        <Route path="/CorreoContraseña" element={<CorreoContraseña />} />
       </Routes>
 
     </HashRouter>
