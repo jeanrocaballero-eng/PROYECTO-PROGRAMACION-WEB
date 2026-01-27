@@ -2,16 +2,18 @@ import { useNavigate } from "react-router-dom";
 
 function LobbyUSER() {
 
+    const navigate = useNavigate();
+
     return (
         <div>
             <div className="flex shadow-lg items-center px-16 h-28">
 
-                <a href="/">
-                    <img 
-                    className="h-24" 
-                    src="/imagenes/logo2.png" 
-                    alt="Logo del controlador de gastos"/>
-                </a>
+                
+                <img 
+                className="h-24" 
+                src="/imagenes/logo2.png" 
+                alt="Logo del controlador de gastos"/>
+                
 
                 <h1 className="absolute left-1/2 transform -translate-x-1/2 text-2xl font-bold">
                     MIS EGRESOS
@@ -37,7 +39,9 @@ function LobbyUSER() {
                         REGISTRAR
                     </button>
 
-                    <button className="bg-yellow-500 text-black p-2 rounded-3xl mt-4 font-bold text-sm mb-3 hover:bg-yellow-600 transition">
+                    <button 
+                        onClick={() => navigate("/EditarEgreso")}
+                        className="bg-yellow-500 text-black p-2 rounded-3xl mt-4 font-bold text-sm mb-3 hover:bg-yellow-600 transition">
                         EDITAR
                     </button>
 
@@ -45,11 +49,16 @@ function LobbyUSER() {
                         EXPORTAR
                     </button>
 
-                    <button className="bg-red-500 text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-52 hover:bg-red-600 transition">
+                    <button 
+                        onClick={() => navigate("/EliminarEgreso")}
+                        className="bg-red-500 text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-52 hover:bg-red-600 transition">
                         ELIMINAR
                     </button>
 
-                    <a href="#" className="text-sm font-bold hover:text-blue-900 ml-3 mb-12 transition">CAMBIAR CONTRASEÑA</a>
+                    <a 
+                        onClick={() => navigate("/CambiarContraseña")}
+                        className="text-sm font-bold hover:text-blue-900 ml-3 mb-12 transition cursor-pointer"
+                    >CAMBIAR CONTRASEÑA</a>
 
                 </aside>
 
