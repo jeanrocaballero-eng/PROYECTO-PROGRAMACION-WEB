@@ -1,4 +1,5 @@
 import Cabecera_para_formularios from "../components/Cabecera_registro";
+import Mensaje from "../components/Mensaje";
 import { useState } from "react";
 
 function LoginPage() {
@@ -55,6 +56,8 @@ function LoginPage() {
                     </a>
                     </div>
                 </form>
+
+                <Mensaje msg="Datos incorrectos" visible={false} />
 
                 <a href="../main/main_loginUSER.html"
                     className="bg-black text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-2 hover:bg-gray-800 transition text-center">
