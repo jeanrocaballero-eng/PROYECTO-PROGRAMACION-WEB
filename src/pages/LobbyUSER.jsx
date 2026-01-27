@@ -1,14 +1,50 @@
 import { useNavigate } from "react-router-dom";
-
+import { useState } from "react";
+import ListadoEgresosUser from "../components/ListadoEgresosUser";
+ 
 function LobbyUSER() {
 
     const navigate = useNavigate();
+    const handleLogout = () => {
+        navigate("/LoginPage");
+    };
+
+
+    const [egresos, setEgresos] = useState([
+    {
+        id: 1,
+        fecha: "2025-10-08",
+        descripcion: "Supermercado",
+        categoria: "Alimentos",
+        monto: 120
+    },
+    {
+        id: 2,
+        fecha: "2025-10-10",
+        descripcion: "Internet",
+        categoria: "Servicios",
+        monto: 80
+    },
+    {
+        id: 3,
+        fecha: "2026-01-15",
+        descripcion: "Libros",
+        categoria: "Educación",
+        monto: 70
+    },
+    {
+        id: 2,
+        fecha: "2026-01-25",
+        descripcion: "Almuerzo",
+        categoria: "Alimentos",
+        monto: 25
+    }
+    ]);
 
     return (
         <div>
+            {/* Enacabezado */}
             <div className="flex shadow-lg items-center px-16 h-28">
-
-                
                 <img 
                 className="h-24" 
                 src="/imagenes/logo2.png" 
@@ -24,13 +60,14 @@ function LobbyUSER() {
                         USER
                     </span>
 
-                    <button className="bg-red-500 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-red-600 transition">
+                    <button onClick={handleLogout}
+                     className="bg-red-500 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-red-600 transition">
                         Cerrar sesión
                     </button>
                 </div>
-
             </div>
 
+            {/* Botones  */}
             <div className="flex">
 
                 <aside className="w-60 p-6 border-r-4 flex flex-col gap-4 shadow-r">
@@ -62,26 +99,26 @@ function LobbyUSER() {
 
                 </aside>
 
-
-                <div className="flex items-start gap-4 ml-auto mt-8 mr-10 h-10">
-
-                    <span className="font-semibold">
+            {/* Filtro y tabla de egresos */}
+                <div className="flex items-start gap-2 mt-10 h-10 ml-4">
+                    <span className="font-semibold p-1 text-xl">
                         Filtrar por:
                     </span>
 
-                    <select className="bg-gray-100 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                    <select className="bg-gray-100 border border-gray-300 rounded-lg px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
                         <option>Monto</option>
                         <option>Categoría</option>
                         <option>Fecha</option>
                     </select>
 
-                    <button className="bg-gray-300 text-black p-2 rounded-3xl font-bold text-xs hover:bg-gray-400 transition">
+                    <button className="bg-gray-300 text-black p-2 rounded-3xl font-bold text-s hover:bg-gray-400 transition ">
                         Aplicar
                     </button>
-                
                 </div>
 
-
+                <div className="flex-1 px-10 mt-16">
+                    <ListadoEgresosUser egresos={egresos} />
+                </div>
             </div>
         </div>
     );

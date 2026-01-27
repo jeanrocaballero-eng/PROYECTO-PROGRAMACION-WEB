@@ -13,7 +13,7 @@ function ContraseñaCambiada() {
                     </h1>
                     
                     <p className="text-2xl text-gray-700 mb-8">
-                        Presione volver para Iniciar sesión
+                        Presione volver para iniciar sesión
                     </p>
 
                     <button 
