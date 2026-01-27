@@ -2,15 +2,21 @@ import Cabecera_para_formularios from "../components/Cabecera_registro";
 import Formulario_registro from "../components/Formulario_registro";
 import Mensaje from "../components/Mensaje";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 
 function SigninPage() {
 
+  const navigate = useNavigate();
+  const [mostrarMensaje, setMostrarMensaje] = useState(false);
 
   function signin(nombre, email, contraseña) {
   
-    if (nombre != null && email != null && contraseña != null) {
+    if (nombre && email && contraseña) {
       navigate("/LobbyUSER");
+    } else {
+      setMostrarMensaje(true);
+      setTimeout(() => setMostrarMensaje(false), 3000);
     }
     
   }
@@ -24,9 +30,9 @@ function SigninPage() {
 
         <div className="border border-gray-300 grid gap-4 grid-cols-1 p-4 w-96 items-center">
 
-          <Formulario_registro />
+          <Formulario_registro onRegistro={signin} />
 
-          <Mensaje msg="Debe completar todos los campos" visible={false} />
+          <Mensaje msg="Debe completar todos los campos" visible={mostrarMensaje} />
 
         </div>
       </div>

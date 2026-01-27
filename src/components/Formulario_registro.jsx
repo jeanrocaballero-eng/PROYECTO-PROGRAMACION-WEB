@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 
-function Formulario_registro() {
+function Formulario_registro({ onRegistro }) {
 
     const [nombre, setNombre] = useState("");
     const [email, setEmail] = useState("");
     const [contraseña, setContraseña] = useState("");
     const [mostrarContraseña, setMostrarContraseña] = useState(false);
 
+    const handleRegistro = () => {
+        onRegistro(nombre, email, contraseña);
+    };
     
     return (
             <div>
@@ -73,6 +75,7 @@ function Formulario_registro() {
 
                 <button
                 type="button"
+                onClick={handleRegistro}
                 className="bg-black text-white p-2 rounded-3xl mt-8 font-bold text-sm mb-3 hover:bg-gray-800 transition w-full">
                     REGISTRARME
                 </button>
