@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Cabecera_paginas from "../components/Cabecera_paginas";
+import Cabecera_para_formularios from "../components/Cabecera_registro";
 import Mensaje from "../components/Mensaje";
 
 function CambiarContraseña() {
@@ -33,7 +33,7 @@ function CambiarContraseña() {
 
     return (
         <div>
-            <Cabecera_paginas Titulo="" />
+            <Cabecera_para_formularios/>
 
             <div className="flex justify-center mt-20">
                 <div className="border border-gray-300 grid gap-4 grid-cols-1 p-4 w-96 items-center">
