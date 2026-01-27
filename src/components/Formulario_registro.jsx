@@ -7,6 +7,7 @@ function Formulario_registro() {
     const [nombre, setNombre] = useState("");
     const [email, setEmail] = useState("");
     const [contraseña, setContraseña] = useState("");
+    const [mostrarContraseña, setMostrarContraseña] = useState(false);
 
     
     return (
@@ -43,10 +44,11 @@ function Formulario_registro() {
                     />
 
                     <div className="mt-4">Contraseña</div>
+                    <div className="relative">
                     <input
                         className="w-full mt-1 border-2 py-3 rounded border-gray-300 px-4"
                         placeholder="Ingresa tu contraseña"
-                        type="password"
+                        type={mostrarContraseña ? "text" : "password"}
                         value={contraseña}
                         onChange={
                             function (event) {
@@ -54,6 +56,18 @@ function Formulario_registro() {
                             }
                         }
                     />
+                    <button
+                        type="button"
+                        onClick={() => setMostrarContraseña(!mostrarContraseña)}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 mt-1"
+                    >
+                        <img 
+                            src={mostrarContraseña ? "/imagenes/visto.png" : "/imagenes/no_visto.png"}
+                            alt={mostrarContraseña ? "Ocultar" : "Mostrar"}
+                            className="w-5 h-5"
+                        />
+                    </button>
+                    </div>
 
                 </form>
 

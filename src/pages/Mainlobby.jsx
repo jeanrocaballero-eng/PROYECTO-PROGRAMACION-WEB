@@ -23,7 +23,11 @@ function Mainlobby() {
             <div className="flex gap-3 mr-20">
 
                 <button
-                    
+                    onClick={ 
+                        function(){
+                        navigate("/LoginPage")
+                        }
+                    }
                     className="bg-black text-white p-3 rounded-3xl font-bold text-sm px-6 hover:bg-gray-800 transition">
                     Log in
                 </button>
