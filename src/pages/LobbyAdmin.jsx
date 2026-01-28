@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import VerUsuarios from "./VerUsuarios";
+import VerUsuarios from "../components/VerUsuarios";
 
 function LobbyAdmin() {
 
@@ -49,13 +49,20 @@ function LobbyAdmin() {
                         EDITAR
                     </button>
 
-                    <button className="bg-purple-500 text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-3 hover:bg-purple-600 transition">
+                    <button
+                    onClick={() => navigate("/HistorialAdmin")} 
+                    className="bg-purple-500 text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-3 hover:bg-purple-600 transition">
                         HISTORIAL
                     </button>
 
                     <button className="bg-red-500 text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-72 hover:bg-red-600 transition">
                         ELIMINAR
                     </button>
+
+                    <a 
+                        onClick={() => navigate("/CambiarContraseña")}
+                        className="text-sm font-bold hover:text-blue-900 ml-3 mb-12 transition cursor-pointer"
+                    >CAMBIAR CONTRASEÑA</a>
                 </aside>
 
                 <div className="flex items-start gap-4 ml-5 mt-8 mr-10 h-10">

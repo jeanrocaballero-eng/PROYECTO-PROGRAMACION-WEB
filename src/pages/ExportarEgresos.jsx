@@ -81,7 +81,7 @@ function ExportarEgresos() {
         </aside>
 
         <main className="flex-1 flex justify-center px-4 py-10">
-          <div className="border border-gray-300 grid gap-4 grid-cols-1 p-4 w-full max-w-md items-center">
+          <div className="border border-gray-300 grid gap-4 grid-cols-1 p-4 w-full max-w-md items-centere">
 
             <h2 className="font-bold text-xl text-center">Exportación de egresos</h2>
             <p>Selecciona el formato y el rango de fechas para generar tu archivo.</p>
@@ -162,10 +162,6 @@ function ExportarEgresos() {
                 EXPORTAR
               </button>
             </div>
-
-            <p className="text-xs text-gray-500 text-center mt-1">
-              Nota: Esta es una maqueta HTML. La descarga real se implementará con backend o JS.
-            </p>
 
           </div>
         </main>

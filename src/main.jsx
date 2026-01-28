@@ -15,6 +15,7 @@ import CambiarContraseña2 from './pages/CambiarContraseña2';
 import ContraseñaCambiada from './pages/ContraseñaCambiada';
 import ContraseñaCambiada2 from './pages/ContraseñaCambiada2';
 import CorreoContraseña from './pages/CorreoContraseña';
+import HistorialAdmin  from './pages/HistorialAdmin';
 import { HashRouter, Routes, Route } from "react-router-dom";
 
 
@@ -38,7 +39,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/ContraseñaCambiada" element={<ContraseñaCambiada />} />
         <Route path="/ContraseñaCambiada2" element={<ContraseñaCambiada2 />} />
         <Route path="/CorreoContraseña" element={<CorreoContraseña />} />
-
+        <Route path="/HistorialAdmin" element={<HistorialAdmin />} />
       </Routes>
 
     </HashRouter>
