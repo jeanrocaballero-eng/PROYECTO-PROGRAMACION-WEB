@@ -5,6 +5,7 @@ import ListadoEgresosUser from "../components/ListadoEgresosUser";
 function LobbyUSER() {
 
     const navigate = useNavigate();
+    
     const handleLogout = () => {
         navigate("/LoginPage");
     };
@@ -72,7 +73,9 @@ function LobbyUSER() {
 
                 <aside className="w-60 p-6 border-r-4 flex flex-col gap-4 shadow-r">
                     
-                    <button className="bg-black text-white p-2 rounded-3xl mt-10 font-bold text-sm mb-3 hover:bg-gray-700 transition">
+                    <button 
+                        onClick={() => navigate("/RegistrarEgreso")}
+                        className="bg-black text-white p-2 rounded-3xl mt-10 font-bold text-sm mb-3 hover:bg-gray-700 transition">
                         REGISTRAR
                     </button>
 
@@ -82,7 +85,9 @@ function LobbyUSER() {
                         EDITAR
                     </button>
 
-                    <button className="bg-purple-500 text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-3 hover:bg-purple-600 transition">
+                    <button 
+                        onClick={() => navigate("/ExportarEgresos")}
+                        className="bg-purple-500 text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-3 hover:bg-purple-600 transition">
                         EXPORTAR
                     </button>
 
