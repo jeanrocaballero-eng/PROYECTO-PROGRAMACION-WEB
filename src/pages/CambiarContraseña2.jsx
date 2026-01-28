@@ -17,7 +17,7 @@ function CambiarContraseña() {
     const handleCambiarContraseña = () => {
         if (contraseñaNueva && confirmarContraseña) {
             if (contraseñaNueva === confirmarContraseña) {
-                navigate("/ContraseñaCambiada");
+                navigate("/ContraseñaCambiada2");
             } else {
                 setMensajeError("Las contraseñas deben coincidir");
                 setMostrarMensaje(true);
@@ -34,7 +34,7 @@ function CambiarContraseña() {
 
     return (
         <div>
-            <Cabecera_paginas/>
+            <Cabecera_para_formularios/>
 
             <div className="flex justify-center mt-20">
                 <div className="border border-gray-300 grid gap-4 grid-cols-1 p-4 w-96 items-center">

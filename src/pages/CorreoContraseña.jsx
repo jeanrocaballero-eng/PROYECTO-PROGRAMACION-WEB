@@ -16,7 +16,7 @@ function CorreoContraseña() {
             return;
         }
 
-        navigate("/CambiarContraseña");
+        navigate("/CambiarContraseña2");
     };
 
     return (

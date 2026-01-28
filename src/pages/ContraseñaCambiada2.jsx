@@ -17,7 +17,7 @@ function ContraseñaCambiada() {
                     </p>
 
                     <button 
-                        onClick={() => navigate("/LobbyUSER")}
+                        onClick={() => navigate("/LoginPage")}
                         className="bg-black text-white px-8 py-3 rounded-3xl font-bold text-lg hover:bg-gray-800 transition"
                     >
                         Volver

@@ -9,7 +9,9 @@ import LobbyAdmin from './pages/LobbyAdmin';
 import EliminarEgreso from './pages/EliminarEgreso';
 import EditarEgreso from './pages/EditarEgreso';
 import CambiarContraseña from './pages/CambiarContraseña';
+import CambiarContraseña2 from './pages/CambiarContraseña2';
 import ContraseñaCambiada from './pages/ContraseñaCambiada';
+import ContraseñaCambiada2 from './pages/ContraseñaCambiada2';
 import CorreoContraseña from './pages/CorreoContraseña';
 import { HashRouter, Routes, Route } from "react-router-dom";
 
@@ -28,8 +30,11 @@ createRoot(document.getElementById('root')).render(
         <Route path="/EliminarEgreso" element={<EliminarEgreso />} />
         <Route path="/EditarEgreso" element={<EditarEgreso />} />
         <Route path="/CambiarContraseña" element={<CambiarContraseña />} />
+        <Route path="/CambiarContraseña2" element={<CambiarContraseña2 />} />
         <Route path="/ContraseñaCambiada" element={<ContraseñaCambiada />} />
+        <Route path="/ContraseñaCambiada2" element={<ContraseñaCambiada2 />} />
         <Route path="/CorreoContraseña" element={<CorreoContraseña />} />
+
       </Routes>
 
     </HashRouter>
