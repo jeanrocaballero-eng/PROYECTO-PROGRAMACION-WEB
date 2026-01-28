@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import VerUsuarios from "./VerUsuarios";
 
 function LobbyAdmin() {
 
@@ -57,7 +58,7 @@ function LobbyAdmin() {
                     </button>
                 </aside>
 
-                <div className="flex items-start gap-4 ml-auto mt-8 mr-10 h-10">
+                <div className="flex items-start gap-4 ml-5 mt-8 mr-10 h-10">
                     <span className="font-semibold">
                         Filtrar por:
                     </span>
@@ -68,9 +69,13 @@ function LobbyAdmin() {
                         <option>poner rol</option>
                     </select>
 
-                    <button className="bg-gray-300 text-black p-2 rounded-3xl font-bold text-xs hover:bg-gray-400 transition">
+                    <button className="bg-gray-300 text-black p-2 rounded-3xl font-bold text-xs hover:bg-gray-400 transition -mr-8">
                         Aplicar
                     </button>
+                </div>
+
+                <div className="flex-1 px-10 mt-8">
+                    <VerUsuarios />
                 </div>
             </div>
         </div>

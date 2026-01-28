@@ -1,10 +1,7 @@
 function VerUsuarios() {
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">
-        Lista de Usuarios
-      </h1>
-
+      
       <table className="w-full border border-gray-300">
         <thead>
           <tr className="bg-gray-100">
