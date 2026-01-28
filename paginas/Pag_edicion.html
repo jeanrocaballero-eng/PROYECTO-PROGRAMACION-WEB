@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuarios</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="../imagenes/logo.png">
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- HEADER -->
+    <div class="flex shadow-lg items-center px-16 h-28 bg-white">
+
+        <a href="../main/main_loginADMIN.html">
+            <img class="h-24" src="../imagenes/logo2.png" alt="Logo">
+        </a>
+
+        <h1 class="absolute left-1/2 transform -translate-x-1/2 text-2xl font-bold">
+            EDICIÓN DE USUARIOS
+        </h1>
+
+        <div class="ml-auto flex items-center gap-3">
+            <span class="bg-gray-300 text-gray-800 px-4 py-1 rounded-full text-xs font-semibold">
+                ADMIN
+            </span>
+
+            <button class="bg-red-500 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-red-600 transition">
+                Cerrar sesión
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="flex">
+
+        <!-- SIDEBAR -->
+        <aside class="w-60 p-6 border-r-4 shadow-lg bg-white flex flex-col gap-4">
+            <a href="dashboard_admin.html"
+               class="bg-gray-800 text-white p-2 rounded-3xl mt-10 font-bold text-sm text-center hover:bg-gray-700">
+                DASHBOARD
+            </a>
+
+            <a href="editar_usuarios.html"
+               class="bg-yellow-500 text-black p-2 rounded-3xl font-bold text-sm text-center hover:bg-yellow-600">
+                EDITAR USUARIOS
+            </a>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="flex-1 p-10">
+
+            <div class="bg-white shadow-lg rounded-xl p-6">
+
+                <!-- FILTRO -->
+                <div class="flex items-center gap-4 mb-6">
+                    <span class="font-semibold">Filtrar por rol:</span>
+
+                    <select id="filtroRol"
+                    class="border rounded px-3 py-2">
+                        <option value="TODOS">Todos</option>
+                        <option value="USER">Usuarios</option>
+                        <option value="ADMIN">Administradores</option>
+                    </select>
+
+                    <button onclick="aplicarFiltro()"
+                    class="bg-gray-300 px-4 py-2 rounded font-semibold hover:bg-gray-400">
+                        Aplicar
+                    </button>
+                </div>
+
+                <!-- TABLA -->
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-gray-200 text-left">
+                            <th class="p-3">Nombre</th>
+                            <th class="p-3">Correo</th>
+                            <th class="p-3">Rol</th>
+                            <th class="p-3 text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaUsuarios"></tbody>
+                </table>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+        const tabla = document.getElementById("tablaUsuarios");
+
+        function mostrarUsuarios(lista) {
+            tabla.innerHTML = "";
+
+            if (lista.length === 0) {
+                tabla.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center p-6 text-gray-500">
+                            No hay usuarios para mostrar
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            lista.forEach((u, index) => {
+                tabla.innerHTML += `
+                    <tr class="border-t">
+                        <td class="p-3">${u.nombre}</td>
+                        <td class="p-3">${u.correo}</td>
+                        <td class="p-3 font-semibold">${u.rol}</td>
+                        <td class="p-3 text-center">
+                            <button onclick="editarUsuario(${index})"
+                            class="bg-yellow-400 hover:bg-yellow-500 px-4 py-1 rounded mr-2">
+                                Editar
+                            </button>
+
+                            <button onclick="eliminarUsuario(${index})"
+                            class="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded">
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function aplicarFiltro() {
+            const rol = document.getElementById("filtroRol").value;
+
+            if (rol === "TODOS") {
+                mostrarUsuarios(usuarios);
+            } else {
+                const filtrados = usuarios.filter(u => u.rol === rol);
+                mostrarUsuarios(filtrados);
+            }
+        }
+
+        function editarUsuario(index) {
+            const nuevoNombre = prompt("Nuevo nombre:", usuarios[index].nombre);
+            const nuevoRol = prompt("Rol (USER / ADMIN):", usuarios[index].rol);
+
+            if (!nuevoNombre || !nuevoRol) return;
+
+            usuarios[index].nombre = nuevoNombre;
+            usuarios[index].rol = nuevoRol.toUpperCase();
+
+            localStorage.setItem("usuarios", JSON.stringify(usuarios));
+            aplicarFiltro();
+        }
+
+        function eliminarUsuario(index) {
+            if (!confirm("¿Seguro que deseas eliminar este usuario?")) return;
+
+            usuarios.splice(index, 1);
+            localStorage.setItem("usuarios", JSON.stringify(usuarios));
+            aplicarFiltro();
+        }
+
+        // Cargar al entrar
+        mostrarUsuarios(usuarios);
+    </script>
+
+</body>
+</html>

@@ -52,6 +52,36 @@
 
         </div>
     </div>
-
+    <script>
+        const btnRegistrar = document.querySelector("button");
+        
+        btnRegistrar.addEventListener("click", function () {
+        
+            const nombre = document.getElementById("nombre").value;
+            const correo = document.getElementById("correo").value;
+            const contraseña = document.getElementById("contraseña").value;
+        
+            if (!nombre || !correo || !contraseña) {
+                alert("Completa todos los campos");
+                return;
+            }
+        
+            const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+        
+            const nuevoUsuario = {
+                id: Date.now(),
+                nombre,
+                correo,
+                contraseña,
+                rol: "USER"   // 🔒 fijo
+            };
+        
+            usuarios.push(nuevoUsuario);
+            localStorage.setItem("usuarios", JSON.stringify(usuarios));
+        
+            alert("Usuario registrado correctamente");
+            document.querySelector("form").reset();
+        });
+        </script>
 </body>
 </html>
