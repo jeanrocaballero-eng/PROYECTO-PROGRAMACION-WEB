@@ -59,10 +59,6 @@ function LobbyAdmin() {
                         ELIMINAR
                     </button>
 
-                    <a 
-                        onClick={() => navigate("/CambiarContraseña")}
-                        className="text-sm font-bold hover:text-blue-900 ml-3 mb-12 transition cursor-pointer"
-                    >CAMBIAR CONTRASEÑA</a>
                 </aside>
 
                 <div className="flex items-start gap-4 ml-5 mt-8 mr-10 h-10">

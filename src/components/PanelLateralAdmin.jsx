@@ -32,12 +32,7 @@ function PanelLateralAdmin(){
                     ELIMINAR
                 </button>
 
-                <button
-                    onClick={() => navigate("/CambiarContraseña")}
-                    className="text-sm font-bold hover:text-blue-900 ml-3 mb-12 transition cursor-pointer"
-                >
-                    CAMBIAR CONTRASEÑA
-                </button>
+                
             </aside>
 
         </div>
