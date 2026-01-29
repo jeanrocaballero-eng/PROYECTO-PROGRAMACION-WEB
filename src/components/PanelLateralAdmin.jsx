@@ -30,7 +30,7 @@ function PanelLateralAdmin(){
 
                 <button
                     
-                    className="bg-red-500 text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-52 hover:bg-red-600 transition text-center"
+                    className="bg-red-500 text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-96 hover:bg-red-600 transition text-center"
                 >
                     ELIMINAR
                 </button>

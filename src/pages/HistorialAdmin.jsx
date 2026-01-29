@@ -10,10 +10,10 @@ function HistorialAdmin() {
         <div>
             <CabeceraPaginasAdmin Titulo="Historial de Acceso de Usuarios" />
 
-            <div className="flex">
+            <div className="flex w-full">
                 <PanelLateralAdmin />
 
-                <table className="w-full table-fixed border border-gray-300 mx-130 mt-20">
+                <table className="table-fixed border border-gray-300 ml-32 mt-10">
                     <thead>
                         <tr className="bg-gray-100">
                             <th className="border p-2 text-left w-10">Usuario</th>
