@@ -1,3 +1,4 @@
+import GestionUsuarios from './pages/GestionUsuarios';
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './main.css'
@@ -25,6 +26,7 @@ createRoot(document.getElementById('root')).render(
     <HashRouter>
 
       <Routes>
+        <Route path="/GestionUsuarios" element={<GestionUsuarios />} />
         <Route path="/" element={<Mainlobby />} />
         <Route path="/LoginPage" element={<LoginPage />} />
         <Route path="/SigninPage" element={<SigninPage />} />
