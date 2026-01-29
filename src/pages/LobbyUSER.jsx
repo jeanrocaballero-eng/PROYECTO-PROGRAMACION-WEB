@@ -95,6 +95,13 @@ function LobbyUSER() {
             descripcion: "Suscripción streaming",
             categoria: "Entretenimiento",
             monto: 15
+        },
+        {
+            id: 13,
+            fecha: "2026-02-26",
+            descripcion: "Agua",
+            categoria: "Servicios",
+            monto: 95
         }
     ]);
 

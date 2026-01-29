@@ -1,6 +1,12 @@
+import CabeceraPaginasAdmin from "../components/CabeceraPaginasAdmin";
+
 function GestionUsuarios() {
   return (
-    <div className="p-6">
+    <div>
+
+      <CabeceraPaginasAdmin Titulo="Gestión de Usuarios" />
+
+      <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">
         Gestión de Usuarios
       </h1>
@@ -338,6 +344,8 @@ function GestionUsuarios() {
         </tbody>
       </table>
     </div>
+    </div>
+    
   );
 }
 
