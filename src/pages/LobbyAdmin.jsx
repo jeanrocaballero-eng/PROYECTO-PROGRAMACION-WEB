@@ -45,7 +45,9 @@ function LobbyAdmin() {
                         CREAR
                     </button>
 
-                    <button className="bg-yellow-500 text-black p-2 rounded-3xl mt-4 font-bold text-sm mb-3 hover:bg-yellow-600 transition">
+                    <button 
+                    onClick={() => navigate("/GestionUsuarios")}
+                    className="bg-yellow-500 text-black p-2 rounded-3xl mt-4 font-bold text-sm mb-3 hover:bg-yellow-600 transition">
                         EDITAR
                     </button>
 

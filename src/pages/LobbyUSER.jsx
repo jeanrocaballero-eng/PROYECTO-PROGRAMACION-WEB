@@ -12,34 +12,97 @@ function LobbyUSER() {
 
 
     const [egresos, setEgresos] = useState([
-    {
-        id: 1,
-        fecha: "2025-10-08",
-        descripcion: "Supermercado",
-        categoria: "Alimentos",
-        monto: 120
-    },
-    {
-        id: 2,
-        fecha: "2025-10-10",
-        descripcion: "Internet",
-        categoria: "Servicios",
-        monto: 80
-    },
-    {
-        id: 3,
-        fecha: "2026-01-15",
-        descripcion: "Libros",
-        categoria: "Educación",
-        monto: 70
-    },
-    {
-        id: 2,
-        fecha: "2026-01-25",
-        descripcion: "Almuerzo",
-        categoria: "Alimentos",
-        monto: 25
-    }
+        {
+            id: 1,
+            fecha: "2025-10-08",
+            descripcion: "Supermercado",
+            categoria: "Alimentos",
+            monto: 120
+        },
+        {
+            id: 2,
+            fecha: "2025-10-10",
+            descripcion: "Internet",
+            categoria: "Servicios",
+            monto: 80
+        },
+        {
+            id: 3,
+            fecha: "2026-01-15",
+            descripcion: "Libros",
+            categoria: "Educación",
+            monto: 70
+        },
+        {
+            id: 4,
+            fecha: "2026-01-25",
+            descripcion: "Almuerzo",
+            categoria: "Alimentos",
+            monto: 25
+        },
+        {
+            id: 5,
+            fecha: "2026-02-01",
+            descripcion: "Gasolina",
+            categoria: "Transporte",
+            monto: 60
+        },
+        {
+            id: 6,
+            fecha: "2026-02-03",
+            descripcion: "Cine",
+            categoria: "Entretenimiento",
+            monto: 35
+        },
+        {
+            id: 7,
+            fecha: "2026-02-05",
+            descripcion: "Ropa",
+            categoria: "Compras",
+            monto: 150
+        },
+        {
+            id: 8,
+            fecha: "2026-02-10",
+            descripcion: "Electricidad",
+            categoria: "Servicios",
+            monto: 95
+        },
+        {
+            id: 9,
+            fecha: "2026-02-12",
+            descripcion: "Consulta médica",
+            categoria: "Salud",
+            monto: 120
+        },
+        {
+            id: 10,
+            fecha: "2026-02-15",
+            descripcion: "Café",
+            categoria: "Alimentos",
+            monto: 8
+        },
+        {
+            id: 11,
+            fecha: "2026-02-18",
+            descripcion: "Taxi",
+            categoria: "Transporte",
+            monto: 22
+        },
+        {
+            id: 12,
+            fecha: "2026-02-20",
+            descripcion: "Suscripción streaming",
+            categoria: "Entretenimiento",
+            monto: 15
+        },
+        {
+            id: 13,
+            fecha: "2026-02-26",
+            descripcion: "Agua",
+            categoria: "Servicios",
+            monto: 95
+        }
     ]);
 
     return (
