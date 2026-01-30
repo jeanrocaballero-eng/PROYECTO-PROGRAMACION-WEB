@@ -26,9 +26,9 @@ function SigninPage() {
 
       <Cabecera_para_formularios />
       
-      <div className="flex justify-center mt-20">
+      <div className="flex justify-center mt-20 px-4">
 
-        <div className="border border-gray-300 grid gap-4 grid-cols-1 p-4 w-96 items-center">
+        <div className="border border-gray-300 grid gap-4 grid-cols-1 p-4 w-full max-w-sm items-center">
 
           <Formulario_registro onRegistro={signin} />
 

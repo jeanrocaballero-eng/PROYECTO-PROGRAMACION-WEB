@@ -14,7 +14,7 @@ function RegistrarEgreso() {
 
   return (
     <div>
-      <div className="flex shadow-lg items-center px-16 h-28">
+      <div className="flex shadow-lg items-center px-4 sm:px-8 md:px-16 h-20 sm:h-24 md:h-28">
 
         <button onClick={handleVolver} className="cursor-pointer">
           <img className="h-24" src="/imagenes/logo2.png" alt="Logo del controlador de gastos" />
@@ -41,7 +41,7 @@ function RegistrarEgreso() {
 
       <div className="flex">
 
-        <aside className="w-60 p-6 border-r-4 flex flex-col gap-4 shadow-r">
+        <aside className="w-full md:w-60 p-4 md:p-6 border-r-0 md:border-r-4 flex flex-col gap-4 shadow-r">
 
           <button
             onClick={() => navigate("/RegistrarEgreso")}

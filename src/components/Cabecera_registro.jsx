@@ -7,7 +7,7 @@ function Cabecera_registro(){
 
     return (
 
-        <div className="flex shadow-lg items-center justify-between">
+        <div className="flex shadow-lg items-center justify-between px-4 sm:px-8 md:px-16">
           
           
           <img
@@ -16,7 +16,7 @@ function Cabecera_registro(){
                 navigate("/")
               }
             }
-            className="h-24 my-3 ml-16"
+            className="h-16 sm:h-20 md:h-24 my-3"
             src="/imagenes/logo2.png"
             alt="Logo"
           />

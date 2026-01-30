@@ -7,7 +7,7 @@ function Cabecera_paginas({Titulo}) {
 
     return (
 
-        <div className="flex shadow-lg items-center px-16 h-28">
+        <div className="flex shadow-lg items-center px-4 sm:px-8 md:px-16 h-20 sm:h-24 md:h-28">
 
                 
                 <img 

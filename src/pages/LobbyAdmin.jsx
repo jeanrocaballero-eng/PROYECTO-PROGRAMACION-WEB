@@ -11,7 +11,7 @@ function LobbyAdmin() {
 
     return (
         <div>
-            <div className="flex shadow-lg items-center px-16 h-28">
+            <div className="flex shadow-lg items-center px-4 sm:px-8 md:px-16 h-20 sm:h-24 md:h-28">
                 <button 
                     onClick={() => navigate("/LobbyAdmin")}
                     className="cursor-pointer"
@@ -38,8 +38,8 @@ function LobbyAdmin() {
                 </div>
             </div>
 
-            <div className="flex">
-                <aside className="w-60 p-6 border-r-4 flex flex-col gap-4 shadow-r">
+            <div className="flex flex-col md:flex-row">
+                <aside className="w-full md:w-60 p-4 md:p-6 border-r-0 md:border-r-4 flex flex-col gap-4 shadow-r">
                     
                     <button className="bg-black text-white p-2 rounded-3xl mt-10 font-bold text-sm mb-3 hover:bg-gray-700 transition">
                         CREAR
@@ -61,7 +61,7 @@ function LobbyAdmin() {
 
                 </aside>
 
-                <div className="flex items-start gap-4 ml-5 mt-8 mr-10 h-10">
+                <div className="flex flex-col sm:flex-row items-start gap-4 ml-5 mt-8 mr-5 md:mr-10 h-auto sm:h-10 px-4 md:px-0">
                     <span className="font-semibold">
                         Filtrar por:
                     </span>
@@ -77,7 +77,7 @@ function LobbyAdmin() {
                     </button>
                 </div>
 
-                <div className="flex-1 px-10 mt-8">
+                <div className="flex-1 px-4 md:px-10 mt-8">
                     <VerUsuarios />
                 </div>
             </div>

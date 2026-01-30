@@ -6,8 +6,9 @@ function EditarEgreso(){
     <div>
       <Cabecera_paginas Titulo="EDITAR EGRESO" />
 
-      <div className="p-6 flex justify-center">
-      <table className="w-4/5 border border-gray-300">
+      <div className="p-4 md:p-6 flex justify-center">
+      <div className="w-full overflow-x-auto">
+      <table className="w-full md:w-4/5 border border-gray-300">
         <thead>
           <tr className="bg-gray-100">
             <th className="border p-3 text-left font-semibold">Fecha</th>
@@ -44,6 +45,7 @@ function EditarEgreso(){
           </tr>
         </tbody>
       </table>
+      </div>
       </div>
     </div>
 

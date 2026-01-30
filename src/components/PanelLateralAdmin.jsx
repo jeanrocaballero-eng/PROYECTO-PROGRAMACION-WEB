@@ -3,7 +3,7 @@ function PanelLateralAdmin(){
     return(
         <div className="flex">
             {/* Panel lateral de control */}
-            <aside className="w-60 p-6 border-r-4 flex flex-col gap-4 shadow-r">
+            <aside className="w-full md:w-60 p-4 md:p-6 border-r-0 md:border-r-4 flex flex-col gap-4 shadow-r">
                 <button
                     onClick={() => navigate("/RegistrarEgreso")}
                     className="bg-black text-white p-2 rounded-3xl mt-10 font-bold text-sm mb-3 hover:bg-gray-700 transition text-center"
