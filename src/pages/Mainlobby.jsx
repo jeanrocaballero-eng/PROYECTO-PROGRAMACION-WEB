@@ -8,19 +8,19 @@ function Mainlobby() {
 
     <div>
 
-        <div className="flex shadow-lg items-center justify-between">
+        <div className="flex shadow-lg items-center justify-between px-4 sm:px-8 md:px-16">
 
             <a href="/">
             
                 <img
-                    className="h-24 my-3 ml-16"
+                    className="h-16 sm:h-20 md:h-24 my-3"
                     src="/imagenes/logo2.png"
                     alt="Logo del controlador de gastos"
                 />
 
             </a>
 
-            <div className="flex gap-3 mr-20">
+            <div className="flex gap-3">
 
                 <button
                     onClick={ 

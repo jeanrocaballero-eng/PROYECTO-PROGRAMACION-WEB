@@ -6,7 +6,7 @@ function GestionUsuarios() {
 
       <CabeceraPaginasAdmin Titulo="Gestión de Usuarios" />
 
-      <div className="p-6">
+      <div className="p-4 md:p-6">
       <h1 className="text-2xl font-bold mb-6">
         Gestión de Usuarios
       </h1>
