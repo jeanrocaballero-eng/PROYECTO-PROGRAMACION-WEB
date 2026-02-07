@@ -1,7 +1,7 @@
 
 import { useNavigate } from "react-router-dom";
 
-function PanelLateralAdmin(){
+function PanelLateralUser(){
 
     const navigate = useNavigate();
     return(
@@ -41,4 +41,4 @@ function PanelLateralAdmin(){
         </div>
     )
 }
-export default PanelLateralAdmin;
+export default PanelLateralUser;

@@ -8,8 +8,6 @@ import LoginPage from './pages/LoginPage';
 import Mainlobby from './pages/Mainlobby';
 import LobbyUSER from './pages/LobbyUSER';
 import LobbyAdmin from './pages/LobbyAdmin';
-import EliminarEgreso from './pages/EliminarEgreso';
-import EditarEgreso from './pages/EditarEgreso';
 import RegistrarEgreso from './pages/RegistrarEgreso';
 import ExportarEgresos from './pages/ExportarEgresos';
 import CambiarContraseña from './pages/CambiarContraseña';
@@ -36,8 +34,6 @@ createRoot(document.getElementById('root')).render(
         <Route path="/LobbyAdmin" element={<LobbyAdmin />} />
         <Route path="/RegistrarEgreso" element={<RegistrarEgreso />} />
         <Route path="/ExportarEgresos" element={<ExportarEgresos />} />
-        <Route path="/EliminarEgreso" element={<EliminarEgreso />} />
-        <Route path="/EditarEgreso" element={<EditarEgreso />} />
         <Route path="/CambiarContraseña" element={<CambiarContraseña />} />
         <Route path="/CambiarContraseña2" element={<CambiarContraseña2 />} />
         <Route path="/ContraseñaCambiada" element={<ContraseñaCambiada />} />

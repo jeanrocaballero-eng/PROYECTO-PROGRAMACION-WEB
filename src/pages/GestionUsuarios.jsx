@@ -3,7 +3,6 @@ import CabeceraPaginasAdmin from "../components/CabeceraPaginasAdmin";
 function GestionUsuarios() {
   return (
     <div>
-
       <CabeceraPaginasAdmin Titulo="Gestión de Usuarios" />
 
       <div className="p-4 md:p-6">

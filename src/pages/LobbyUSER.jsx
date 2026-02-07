@@ -10,6 +10,14 @@ function LobbyUSER() {
         navigate("/LoginPage");
     };
 
+    const [modalEditar, setModalEditar] = useState(false);
+    const [egresoEditando, setEgresoEditando] = useState(null);
+    const [formData, setFormData] = useState({
+        fecha: "",
+        descripcion: "",
+        categoria: "",
+        monto: ""
+    });
 
     const [egresos, setEgresos] = useState([
         {
@@ -105,6 +113,52 @@ function LobbyUSER() {
         }
     ]);
 
+    const handleEditar = (egreso) => {
+        setEgresoEditando(egreso);
+        setFormData({
+            fecha: egreso.fecha,
+            descripcion: egreso.descripcion,
+            categoria: egreso.categoria,
+            monto: egreso.monto
+        });
+        setModalEditar(true);
+    };
+
+    const handleGuardar = () => {
+        setEgresos(egresos.map(e => 
+            e.id === egresoEditando.id 
+                ? { ...e, ...formData }
+                : e
+        ));
+        setModalEditar(false);
+        setEgresoEditando(null);
+    };
+
+    const handleCancelar = () => {
+        setModalEditar(false);
+        setEgresoEditando(null);
+        setFormData({
+            fecha: "",
+            descripcion: "",
+            categoria: "",
+            monto: ""
+        });
+    };
+
+    const handleEliminar = (id) => {
+        if (confirm("¿Estás seguro de que deseas eliminar este egreso?")) {
+            setEgresos(egresos.filter(e => e.id !== id));
+        }
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: name === "monto" ? parseFloat(value) || "" : value
+        }));
+    };
+
     return (
         <div>
             {/* Enacabezado */}
@@ -143,22 +197,11 @@ function LobbyUSER() {
                     </button>
 
                     <button 
-                        onClick={() => navigate("/EditarEgreso")}
-                        className="bg-yellow-500 text-black p-2 rounded-3xl mt-4 font-bold text-sm mb-3 hover:bg-yellow-600 transition">
-                        EDITAR
-                    </button>
-
-                    <button 
                         onClick={() => navigate("/ExportarEgresos")}
-                        className="bg-purple-500 text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-3 hover:bg-purple-600 transition">
+                        className="bg-yellow-500 text-black p-2 rounded-3xl mt-4 font-bold text-sm mb-3 hover:bg-yellow-600 transition">
                         EXPORTAR
                     </button>
 
-                    <button 
-                        onClick={() => navigate("/EliminarEgreso")}
-                        className="bg-red-500 text-white p-2 rounded-3xl mt-4 font-bold text-sm mb-52 hover:bg-red-600 transition">
-                        ELIMINAR
-                    </button>
 
                     <a 
                         onClick={() => navigate("/CambiarContraseña")}
@@ -184,10 +227,88 @@ function LobbyUSER() {
                     </button>
                 </div>
 
-                <div className="flex-1 px-4 md:px-10 mt-16">
-                    <ListadoEgresosUser egresos={egresos} />
+                <div className="flex-1 mt-16 mb-16 flex flex-col items-center justify-center px-4">
+                    <div className="overflow-y-auto max-h-96 w-full">
+                        <ListadoEgresosUser 
+                            egresos={egresos}
+                            onEditar={handleEditar}
+                            onEliminar={handleEliminar}
+                        />
+                    </div>
                 </div>
             </div>
+
+            {/* Modal de Editar Egreso */}
+            {modalEditar && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+                        <h2 className="text-2xl font-bold mb-6 text-center">Editar Egreso</h2>
+                        
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block font-semibold text-gray-700 mb-2">Fecha</label>
+                                <input
+                                    type="date"
+                                    name="fecha"
+                                    value={formData.fecha}
+                                    onChange={handleInputChange}
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block font-semibold text-gray-700 mb-2">Descripción</label>
+                                <input
+                                    type="text"
+                                    name="descripcion"
+                                    value={formData.descripcion}
+                                    onChange={handleInputChange}
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block font-semibold text-gray-700 mb-2">Categoría</label>
+                                <input
+                                    type="text"
+                                    name="categoria"
+                                    value={formData.categoria}
+                                    onChange={handleInputChange}
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block font-semibold text-gray-700 mb-2">Monto (S/.)</label>
+                                <input
+                                    type="number"
+                                    name="monto"
+                                    value={formData.monto}
+                                    onChange={handleInputChange}
+                                    step="0.01"
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex gap-4 mt-8 pt-6 border-t border-gray-200">
+                            <button
+                                onClick={handleGuardar}
+                                className="flex-1 bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition"
+                            >
+                                Guardar
+                            </button>
+                            <button
+                                onClick={handleCancelar}
+                                className="flex-1 bg-gray-400 text-white py-2 rounded-lg font-semibold hover:bg-gray-500 transition"
+                            >
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }

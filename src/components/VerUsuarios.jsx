@@ -1,152 +1,55 @@
-function VerUsuarios() {
+function VerUsuarios({ usuarios, onEditar, onEliminar }) {
   return (
-    <div className="p-6">
-      
-      <table className="w-full border border-gray-300">
+    <div className="p-6 w-full flex justify-center">
+      <div className="overflow-y-auto max-h-96 w-full max-w-5xl">
+        <table className="w-full border border-gray-300">
         <thead>
           <tr className="bg-gray-100">
             <th className="border p-2 text-left">Nombre</th>
             <th className="border p-2 text-left">Correo</th>
             <th className="border p-2 text-left">Rol</th>
             <th className="border p-2 text-left">Estado</th>
+            <th className="border p-2 text-center">Editar</th>
+            <th className="border p-2 text-center">Eliminar</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr>
-            <td className="border p-2">Hernan Quintana</td>
-            <td className="border p-2">hernanquint@gmail.com</td>
-            <td className="border p-2 text-yellow-600 font-bold">Administrador</td>
-            <td className="border p-2 text-yellow-600 font-bold">-</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Jesus Pisconte</td>
-            <td className="border p-2">jesuspisc@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-red-600">Inactivo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Raul Quispe</td>
-            <td className="border p-2">raulquisp@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-green-600">Activo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Angelo Huarancca</td>
-            <td className="border p-2">angelohuarancc@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-green-600">Activo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Alejandro Pacheco</td>
-            <td className="border p-2">alejandropachec@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-green-600">Activo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Jeanpierr Rojas</td>
-            <td className="border p-2">jeanpierrroj@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-green-600">Activo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Claudia Sipion</td>
-            <td className="border p-2">claudiasip@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-red-600">Inactivo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Pedro Pascal</td>
-            <td className="border p-2">pedropasc@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-red-600">Inactivo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Mark Hamill</td>
-            <td className="border p-2">markham@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-red-600">Inactivo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Carrie Fisher</td>
-            <td className="border p-2">carriefish@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-red-600">Inactivo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Harrison Ford</td>
-            <td className="border p-2">harrisonf@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-green-600">Activo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Hayden Christensen</td>
-            <td className="border p-2">haydenchris@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-green-600">Activo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Ewan McGregor</td>
-            <td className="border p-2">ewanmcgreg@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-green-600">Activo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Natalie Portman</td>
-            <td className="border p-2">natalieport@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-green-600">Activo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Patricia Stuart</td>
-            <td className="border p-2">patriciastu@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-green-600">Activo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Nadia Rodriguez</td>
-            <td className="border p-2">nadiarodrig@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-green-600">Activo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Oscar Quezada</td>
-            <td className="border p-2">oscarquez@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-green-600">Activo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Jim Dios</td>
-            <td className="border p-2">jimdios@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-green-600">Activo</td>
-          </tr>
-
-          <tr className="bg-gray-50">
-            <td className="border p-2">Antonio Pinilla</td>
-            <td className="border p-2">antoniopin@gmail.com</td>
-            <td className="border p-2">Usuario</td>
-            <td className="border p-2 text-green-600">Activo</td>
-          </tr>
+          {usuarios.length === 0 ? (
+            <tr>
+              <td colSpan="6" className="p-4 text-center text-gray-500">
+                No hay usuarios registrados
+              </td>
+            </tr>
+          ) : (
+            usuarios.map((usuario) => (
+              <tr key={usuario.id} className="border-t">
+                <td className="border p-2">{usuario.nombre}</td>
+                <td className="border p-2">{usuario.correo}</td>
+                <td className="border p-2">{usuario.rol}</td>
+                <td className="border p-2">{usuario.estado}</td>
+                <td className="border p-2 text-center">
+                  <button
+                    onClick={() => onEditar(usuario)}
+                    className="bg-yellow-500 text-black px-3 py-1 rounded hover:bg-yellow-600 transition font-semibold"
+                  >
+                    Editar
+                  </button>
+                </td>
+                <td className="border p-2 text-center">
+                  <button
+                    onClick={() => onEliminar(usuario.id)}
+                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition font-semibold"
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
-      </table>
+        </table>
+      </div>
     </div>
   );
 }

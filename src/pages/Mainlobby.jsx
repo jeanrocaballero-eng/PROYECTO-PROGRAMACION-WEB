@@ -54,7 +54,7 @@ function Mainlobby() {
         className="flex items-center mx-auto mt-28"
       />
 
-    </div>
+        </div>
   );
 
 }
