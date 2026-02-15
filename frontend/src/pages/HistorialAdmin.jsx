@@ -1,6 +1,6 @@
 import CabeceraPaginasAdmin from "../components/CabeceraPaginasAdmin";
 import { useNavigate } from "react-router-dom";
-import PanelLateralAdmin from "../components/PanelLateralAdmin";
+import Sidebar_admin from "../components/Sidebar_admin";
 
 function HistorialAdmin() {
 
@@ -11,7 +11,7 @@ function HistorialAdmin() {
             <CabeceraPaginasAdmin Titulo="Historial de Acceso de Usuarios" />
 
             <div className="flex flex-col md:flex-row w-full">
-                <PanelLateralAdmin />
+                <Sidebar_admin />
 
                 <div className="flex-1 overflow-x-auto px-4 md:px-0 mt-4 md:mt-0">
                 <table className="w-full table-auto border border-gray-300">

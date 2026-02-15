@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import Sidebar_user from "../components/Sidebar_user";
+import Header from "../components/Header";
 
 function ExportarEgresos() {
 
@@ -14,54 +16,12 @@ function ExportarEgresos() {
 
   return (
     <div>
-      <div className="flex shadow-lg items-center px-4 sm:px-8 md:px-16 h-20 sm:h-24 md:h-28">
+      <Header titulo="EXPORTAR EGRESOS" tipoUsuario="USER" onLogout={handleLogout} />
 
-        <button onClick={handleVolver} className="cursor-pointer">
-          <img className="h-24" src="/imagenes/logo2.png" alt="Logo del controlador de gastos" />
-        </button>
-
-        <h1 className="absolute left-1/2 transform -translate-x-1/2 text-2xl font-bold">
-          EXPORTAR EGRESOS
-        </h1>
-
-        <div className="ml-auto flex items-center gap-3">
-          <span className="bg-gray-300 text-gray-800 px-4 py-1 rounded-full text-xs font-semibold">
-            USER
-          </span>
-
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-red-600 transition"
-          >
-            Cerrar sesión
-          </button>
-        </div>
-
-      </div>
 
       <div className="flex pb-24">
 
-        <aside className="w-full md:w-60 p-4 md:p-6 border-r-0 md:border-r-4 flex flex-col gap-4 shadow-r">
-
-          <button
-            onClick={() => navigate("/RegistrarEgreso")}
-            className="bg-black text-white p-2 rounded-3xl mt-10 font-bold text-sm mb-3 hover:bg-gray-700 transition">
-            REGISTRAR
-          </button>
-
-          <button
-            onClick={() => navigate("/ExportarEgresos")}
-            className="bg-yellow-500 text-black p-2 rounded-3xl mt-4 font-bold text-sm mb-3 hover:bg-yellow-600 transition">
-            EXPORTAR
-          </button>
-
-
-          <a
-            onClick={() => navigate("/CambiarContraseña")}
-            className="text-sm font-bold hover:text-blue-900 ml-3 mb-12 transition cursor-pointer"
-          >CAMBIAR CONTRASEÑA</a>
-
-        </aside>
+        <Sidebar_user />
 
         <main className="flex-1 flex justify-center px-4 py-10 pb-24">
           <div className="border border-gray-300 grid gap-4 grid-cols-1 p-4 w-full max-w-md items-centere">

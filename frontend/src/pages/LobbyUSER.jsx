@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import ListadoEgresosUser from "../components/ListadoEgresosUser";
+import Navegacion_user from "../components/Navegacion_user";
+import Header from "../components/Header";
  
 function LobbyUSER() {
 
@@ -162,81 +163,14 @@ function LobbyUSER() {
     return (
         <div>
             {/* Enacabezado */}
-            <div className="flex shadow-lg items-center px-4 sm:px-8 md:px-16 h-20 sm:h-24 md:h-28">
-                <img 
-                className="h-24" 
-                src="/imagenes/logo2.png" 
-                alt="Logo del controlador de gastos"/>
-                
+            <Header titulo="MIS EGRESOS" tipoUsuario="USER" onLogout={handleLogout} />
 
-                <h1 className="absolute left-1/2 transform -translate-x-1/2 text-2xl font-bold">
-                    MIS EGRESOS
-                </h1>
-
-                <div className="ml-auto flex items-center gap-3">
-                    <span className="bg-gray-300 text-gray-800 px-4 py-1 rounded-full text-xs font-semibold">
-                        USER
-                    </span>
-
-                    <button onClick={handleLogout}
-                     className="bg-red-500 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-red-600 transition">
-                        Cerrar sesión
-                    </button>
-                </div>
-            </div>
-
-            {/* Botones  */}
-            <div className="flex">
-
-                <aside className="w-full md:w-60 p-4 md:p-6 border-r-0 md:border-r-4 flex flex-col gap-4 shadow-r">
-                    
-                    <button 
-                        onClick={() => navigate("/RegistrarEgreso")}
-                        className="bg-black text-white p-2 rounded-3xl mt-10 font-bold text-sm mb-3 hover:bg-gray-700 transition">
-                        REGISTRAR
-                    </button>
-
-                    <button 
-                        onClick={() => navigate("/ExportarEgresos")}
-                        className="bg-yellow-500 text-black p-2 rounded-3xl mt-4 font-bold text-sm mb-3 hover:bg-yellow-600 transition">
-                        EXPORTAR
-                    </button>
-
-
-                    <a 
-                        onClick={() => navigate("/CambiarContraseña")}
-                        className="text-sm font-bold hover:text-blue-900 ml-3 mb-12 transition cursor-pointer"
-                    >CAMBIAR CONTRASEÑA</a>
-
-                </aside>
-
-            {/* Filtro y tabla de egresos */}
-                <div className="flex flex-col sm:flex-row items-start gap-2 mt-10 h-auto sm:h-10 ml-4 px-4 md:px-0">
-                    <span className="font-semibold p-1 text-xl">
-                        Filtrar por:
-                    </span>
-
-                    <select className="bg-gray-100 border border-gray-300 rounded-lg px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                        <option>Monto</option>
-                        <option>Categoría</option>
-                        <option>Fecha</option>
-                    </select>
-
-                    <button className="bg-gray-300 text-black p-2 rounded-3xl font-bold text-s hover:bg-gray-400 transition ">
-                        Aplicar
-                    </button>
-                </div>
-
-                <div className="flex-1 mt-16 mb-16 flex flex-col items-center justify-center px-4">
-                    <div className="overflow-y-auto max-h-96 w-full">
-                        <ListadoEgresosUser 
-                            egresos={egresos}
-                            onEditar={handleEditar}
-                            onEliminar={handleEliminar}
-                        />
-                    </div>
-                </div>
-            </div>
+            {/* Navegación Principal */}
+            <Navegacion_user 
+                egresos={egresos}
+                onEditar={handleEditar}
+                onEliminar={handleEliminar}
+            />
 
             {/* Modal de Editar Egreso */}
             {modalEditar && (
