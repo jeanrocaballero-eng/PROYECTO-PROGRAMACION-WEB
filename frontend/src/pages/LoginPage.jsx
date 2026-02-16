@@ -16,7 +16,8 @@ function LoginPage() {
         "USER": "123"
     };
 
-    const handleLogin = () => {
+    const handleLogin = (e) => {
+        e.preventDefault();
         if (cuentas[correo] && cuentas[correo] === contraseña) {
             if (correo === "ADMIN") {
                 navigate("/LobbyAdmin");
@@ -43,6 +44,7 @@ function LoginPage() {
                 <h1 className="font-bold text-2xl text-center">Iniciar Sesión</h1>
                 <p>Ingresa con tu correo y contraseña</p>
 
+                <form onSubmit={handleLogin}>
                 <div>
                     <div>Correo Electrónico</div>
                     <input
@@ -88,12 +90,12 @@ function LoginPage() {
                 <Mensaje msg="Datos incorrectos" visible={mostrarMensaje} />
 
                 <button
-                    type="button"
-                    onClick={handleLogin}
-                    className="bg-black text-white p-2 rounded-3xl font-bold text-sm mb-2 hover:bg-gray-800 transition text-center w-full"
+                    type="submit"
+                    className="bg-black text-white p-2 rounded-3xl font-bold text-sm mb-2 hover:bg-gray-800 transition text-center w-full mt-3"
                 >
                     INICIAR SESIÓN
                 </button>
+                </form>
 
                 <p className="text-sm text-center text-gray-600">
                     ¿No tienes una cuenta?{" "}

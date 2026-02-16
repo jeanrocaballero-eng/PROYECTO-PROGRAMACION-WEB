@@ -8,7 +8,8 @@ function Formulario_registro({ onRegistro }) {
     const [contraseña, setContraseña] = useState("");
     const [mostrarContraseña, setMostrarContraseña] = useState(false);
 
-    const handleRegistro = () => {
+    const handleRegistro = (e) => {
+        e.preventDefault();
         onRegistro(nombre, email, contraseña);
     };
     
@@ -17,7 +18,7 @@ function Formulario_registro({ onRegistro }) {
                 <h1 className="font-bold text-2xl text-center">Registro</h1>
                 <p className="mt-4">Proporcione los datos correspondientes</p>
 
-                <form>
+                <form onSubmit={handleRegistro}>
 
                     <div className="mt-4">Nombre</div>
                     <input
@@ -71,14 +72,13 @@ function Formulario_registro({ onRegistro }) {
                     </button>
                     </div>
 
-                </form>
-
                 <button
-                type="button"
-                onClick={handleRegistro}
+                type="submit"
                 className="bg-black text-white p-2 rounded-3xl mt-8 font-bold text-sm mb-3 hover:bg-gray-800 transition w-full">
                     REGISTRARME
                 </button>
+
+                </form>
 
             </div>
     );

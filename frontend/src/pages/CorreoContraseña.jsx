@@ -9,7 +9,8 @@ function CorreoContraseña() {
     const [correoElectronico, setCorreoElectronico] = useState("");
     const [mostrarMensaje, setMostrarMensaje] = useState(false);
 
-    const handleEnviarCodigo = () => {
+    const handleEnviarCodigo = (e) => {
+        e.preventDefault();
         if (correoElectronico.trim() === "" || !correoElectronico.includes("@")) {
             setMostrarMensaje(true);
             setTimeout(() => setMostrarMensaje(false), 3000);
@@ -30,11 +31,12 @@ function CorreoContraseña() {
                         Cambio de contraseña con correo
                     </h1>
 
+                    <form onSubmit={handleEnviarCodigo}>
                     <div>
                         <div>Ingrese su correo electrónico</div>
 
                         <input 
-                            className="w-full mt-1 border-2 py-3 rounded border-gray-300 placeholder:text-gray-400 px-4 text-md"
+                            className="w-full mt-3 border-2 py-3 rounded border-gray-300 placeholder:text-gray-400 px-4 text-md"
                             placeholder="Correo electrónico"
                             value={correoElectronico}
                             onChange={(e) => setCorreoElectronico(e.target.value)}
@@ -43,12 +45,12 @@ function CorreoContraseña() {
                     <Mensaje msg="Debe ingresar un correo electrónico" visible={mostrarMensaje}/>
 
                     <button 
-                        type="button"
-                        onClick={handleEnviarCodigo}
-                        className="bg-black text-white p-2 rounded-3xl font-bold text-sm mb-2 hover:bg-gray-800 transition text-center w-full"
+                        type="submit"
+                        className="bg-black text-white p-2 rounded-3xl font-bold text-sm mb-2 hover:bg-gray-800 transition text-center w-full mt-4"
                     >
                         Enviar Código
                     </button>
+                    </form>
 
                 </div>
             </div>

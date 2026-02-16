@@ -14,7 +14,8 @@ function CambiarContraseña() {
     const [mostrarMensaje, setMostrarMensaje] = useState(false);
     const [mensajeError, setMensajeError] = useState("");
 
-    const handleCambiarContraseña = () => {
+    const handleCambiarContraseña = (e) => {
+        e.preventDefault();
         if (contraseñaNueva && confirmarContraseña) {
             if (contraseñaNueva === confirmarContraseña) {
                 navigate("/ContraseñaCambiada2");
@@ -40,6 +41,7 @@ function CambiarContraseña() {
                 <div className="border border-gray-300 grid gap-4 grid-cols-1 p-4 w-full max-w-sm items-center">
                     <h1 className="font-bold text-2xl text-center">Cambiar contraseña</h1>
 
+                    <form onSubmit={handleCambiarContraseña}>
                     <div>
                         <div>Contraseña nueva</div>
                         <div className="relative">
@@ -91,12 +93,12 @@ function CambiarContraseña() {
                     <Mensaje msg={mensajeError} visible={mostrarMensaje} />
 
                     <button 
-                        type="button"
-                        onClick={handleCambiarContraseña}
+                        type="submit"
                         disabled={!botónHabilitado}
-                        className="bg-black text-white p-2 rounded-3xl mt-4 font-bold text-sm hover:bg-gray-800 transition">
+                        className="bg-black text-white p-2 rounded-3xl mt-5 font-bold text-sm hover:bg-gray-800 transition w-full">
                         CAMBIAR CONTRASEÑA
                     </button>
+                    </form>
                 </div>
             </div>
         </div>
