@@ -14,9 +14,7 @@ router = APIRouter(
 
 @router.post("/egresos")
 async def registrar_egreso(request: RegistrarEgresoRequest):
-    """
-    Registra un nuevo egreso para un usuario autenticado
-    """
+
     # Verificar que el usuario existe
     usuario = encontrar_usuario_por_email(request.email)
     if not usuario:
@@ -58,9 +56,7 @@ async def registrar_egreso(request: RegistrarEgresoRequest):
 
 @router.get("/egresos/{email}")
 async def obtener_egresos_usuario(email: str):
-    """
-    Obtiene todos los egresos de un usuario
-    """
+    
     usuario = encontrar_usuario_por_email(email)
     if not usuario:
         raise HTTPException(
@@ -83,9 +79,7 @@ async def obtener_egresos_usuario(email: str):
 
 @router.put("/egresos/{id_egreso}")
 async def editar_egreso(id_egreso: str, request: EditarEgresoRequest):
-    """
-    Edita un egreso existente (solo los campos proporcionados)
-    """
+
     egreso = encontrar_egreso_por_id(id_egreso)
 
     if not egreso:
