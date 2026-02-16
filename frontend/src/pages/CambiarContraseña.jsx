@@ -7,31 +7,72 @@ import Cabecera_paginas from "../components/Cabecera_paginas";
 function CambiarContraseña() {
 
     const navigate = useNavigate();
+    const [contraseñaActual, setContraseñaActual] = useState("");
     const [contraseñaNueva, setContraseñaNueva] = useState("");
     const [confirmarContraseña, setConfirmarContraseña] = useState("");
+    const [mostrarContraseña0, setMostrarContraseña0] = useState(false);
     const [mostrarContraseña1, setMostrarContraseña1] = useState(false);
     const [mostrarContraseña2, setMostrarContraseña2] = useState(false);
     const [mostrarMensaje, setMostrarMensaje] = useState(false);
     const [mensajeError, setMensajeError] = useState("");
 
-    const handleCambiarContraseña = (e) => {
+    const handleCambiarContraseña = async (e) => {
         e.preventDefault();
-        if (contraseñaNueva && confirmarContraseña) {
-            if (contraseñaNueva === confirmarContraseña) {
+        
+        if (!contraseñaActual || !contraseñaNueva || !confirmarContraseña) {
+            setMensajeError("Debe completar todos los datos");
+            setMostrarMensaje(true);
+            setTimeout(() => setMostrarMensaje(false), 3000);
+            return;
+        }
+
+        if (contraseñaNueva !== confirmarContraseña) {
+            setMensajeError("Las contraseñas deben coincidir");
+            setMostrarMensaje(true);
+            setTimeout(() => setMostrarMensaje(false), 3000);
+            return;
+        }
+
+        try {
+            const userEmail = localStorage.getItem('userEmail');
+            
+            if (!userEmail) {
+                setMensajeError("No se encontró la sesión del usuario");
+                setMostrarMensaje(true);
+                setTimeout(() => setMostrarMensaje(false), 3000);
+                return;
+            }
+
+            const response = await fetch('http://localhost:8000/api/cambiar-contraseña', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: userEmail,
+                    contraseña_actual: contraseñaActual,
+                    contraseña_nueva: contraseñaNueva
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
                 navigate("/ContraseñaCambiada");
             } else {
-                setMensajeError("Las contraseñas deben coincidir");
+                setMensajeError(data.detail || "Error al cambiar contraseña");
                 setMostrarMensaje(true);
                 setTimeout(() => setMostrarMensaje(false), 3000);
             }
-        } else {
-            setMensajeError("Debe completar todos los datos");
+        } catch (error) {
+            console.error('Error:', error);
+            setMensajeError("Error de conexión con el servidor");
             setMostrarMensaje(true);
             setTimeout(() => setMostrarMensaje(false), 3000);
         }
     };
 
-    const botónHabilitado = contraseñaNueva && confirmarContraseña;
+    const botónHabilitado = contraseñaActual && contraseñaNueva && confirmarContraseña;
 
     return (
         <div>
@@ -43,7 +84,29 @@ function CambiarContraseña() {
 
                     <form onSubmit={handleCambiarContraseña}>
                     <div>
-                        <div>Contraseña nueva</div>
+                        <div>Contraseña actual</div>
+                        <div className="relative">
+                        <input 
+                            className="w-full mt-1 border-2 py-3 rounded border-gray-300 placeholder:text-gray-400 px-4 text-md"
+                            placeholder="Contraseña actual"
+                            type={mostrarContraseña0 ? "text" : "password"}
+                            value={contraseñaActual}
+                            onChange={(e) => setContraseñaActual(e.target.value)}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setMostrarContraseña0(!mostrarContraseña0)}
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 mt-1"
+                        >
+                            <img 
+                                src={mostrarContraseña0 ? "/imagenes/visto.png" : "/imagenes/no_visto.png"}
+                                alt={mostrarContraseña0 ? "Ocultar" : "Mostrar"}
+                                className="w-5 h-5"
+                            />
+                        </button>
+                        </div>
+
+                        <div className="mt-4">Contraseña nueva</div>
                         <div className="relative">
                         <input 
                             className="w-full mt-1 border-2 py-3 rounded border-gray-300 placeholder:text-gray-400 px-4 text-md"

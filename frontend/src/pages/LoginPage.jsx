@@ -10,24 +10,57 @@ function LoginPage() {
     const [contraseña, setContraseña] = useState("");
     const [mostrarContraseña, setMostrarContraseña] = useState(false);
     const [mostrarMensaje, setMostrarMensaje] = useState(false);
+    const [mensajeError, setMensajeError] = useState("Datos incorrectos");
 
-    const cuentas = {
-        "ADMIN": "123",
-        "USER": "123"
-    };
-
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        if (cuentas[correo] && cuentas[correo] === contraseña) {
-            if (correo === "ADMIN") {
-                navigate("/LobbyAdmin");
-            } else if (correo === "USER") {
+        
+        if (!correo || !contraseña) {
+            setMensajeError("Debe completar todos los campos");
+            setMostrarMensaje(true);
+            setTimeout(() => setMostrarMensaje(false), 3000);
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:8000/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: correo,
+                    contraseña: contraseña
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Guardar información del usuario en localStorage
+                localStorage.setItem('userEmail', data.usuario.email);
+                localStorage.setItem('userName', data.usuario.nombre);
+                
+                // Navegar a LobbyUSER
                 navigate("/LobbyUSER");
+                
+                setCorreo("");
+                setContraseña("");
+                setMostrarMensaje(false);
+            } else {
+                // Extraer mensaje de error de forma segura
+                let mensaje = "Datos incorrectos";
+                if (data.detail) {
+                    mensaje = typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail);
+                }
+                setMensajeError(mensaje);
+                setMostrarMensaje(true);
+                setTimeout(() => setMostrarMensaje(false), 3000);
+                console.error('Error de login:', data);
             }
-            setCorreo("");
-            setContraseña("");
-            setMostrarMensaje(false);
-        } else {
+        } catch (error) {
+            console.error('Error:', error);
+            setMensajeError("Error de conexión con el servidor");
             setMostrarMensaje(true);
             setTimeout(() => setMostrarMensaje(false), 3000);
         }
@@ -87,7 +120,7 @@ function LoginPage() {
                     </div>
                 </div>
 
-                <Mensaje msg="Datos incorrectos" visible={mostrarMensaje} />
+                <Mensaje msg={mensajeError} visible={mostrarMensaje} />
 
                 <button
                     type="submit"

@@ -125,14 +125,51 @@ function LobbyUSER() {
         setModalEditar(true);
     };
 
-    const handleGuardar = () => {
-        setEgresos(egresos.map(e => 
-            e.id === egresoEditando.id 
-                ? { ...e, ...formData }
-                : e
-        ));
-        setModalEditar(false);
-        setEgresoEditando(null);
+    const handleGuardar = async () => {
+        try {
+            console.log('Enviando datos:', {
+                descripcion: formData.descripcion,
+                monto: parseFloat(formData.monto),
+                categoria: formData.categoria,
+                fecha: formData.fecha
+            });
+
+            const response = await fetch(`http://localhost:8000/api/egresos/${egresoEditando.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    descripcion: formData.descripcion,
+                    monto: parseFloat(formData.monto),
+                    categoria: formData.categoria,
+                    fecha: formData.fecha
+                })
+            });
+
+            console.log('Response status:', response.status);
+            const data = await response.json();
+            console.log('Response data:', data);
+
+            if (response.ok) {
+                console.log('Éxito al editar, actualizando estado local...');
+                // Actualizar el egreso en el estado local
+                setEgresos(egresos.map(e => 
+                    e.id === egresoEditando.id 
+                        ? { ...e, ...formData, monto: parseFloat(formData.monto) }
+                        : e
+                ));
+                setModalEditar(false);
+                setEgresoEditando(null);
+                console.log('Modal cerrado');
+            } else {
+                console.error('Error en respuesta:', data);
+                alert(data.detail || "Error al editar egreso");
+            }
+        } catch (error) {
+            console.error('Error capturado:', error);
+            alert("Error de conexión con el servidor");
+        }
     };
 
     const handleCancelar = () => {
