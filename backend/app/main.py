@@ -8,7 +8,6 @@ from app.routers import auth, egresos, usuarios
 
 app = FastAPI()
 
-# Configurar CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  

@@ -1,11 +1,11 @@
-
 from pydantic import BaseModel, EmailStr
 from typing import Optional
+from datetime import datetime
 
 
 class RegistroRequest(BaseModel):
     nombre: str
-    email: EmailStr
+    email: EmailStr #tiene q ser @hola.com (osea q tenga @ y .com)
     contraseña: str
 
 
@@ -19,14 +19,14 @@ class RegistrarEgresoRequest(BaseModel):
     descripcion: str
     monto: float
     categoria: str
-    fecha: str
+    fecha: datetime
 
 
 class EditarEgresoRequest(BaseModel):
     descripcion: Optional[str] = None
     monto: Optional[float] = None
     categoria: Optional[str] = None
-    fecha: Optional[str] = None
+    fecha: Optional[datetime] = None
 
 
 class CambiarContraseñaRequest(BaseModel):
