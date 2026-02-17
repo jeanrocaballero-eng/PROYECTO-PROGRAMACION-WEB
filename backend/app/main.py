@@ -2,9 +2,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-
 from app.routers import auth, egresos, usuarios
+from app.config import engine, Base
+from app.orm_models import Usuario, Egreso
 
+
+# Crear las tablas en la BD si no existen
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -21,6 +25,6 @@ app.include_router(egresos.router)
 app.include_router(usuarios.router)
 
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+@app.get("/")
+async def root():
+    return {"mensaje": "Backend de gestión de egresos corriendo correctamente"}

@@ -1,7 +1,10 @@
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
+from sqlalchemy.orm import Session
 from app.models import CambiarContraseñaRequest
-from app.database import users_db, encontrar_usuario_por_email
+from app.config import get_db
+from app.orm_models import Usuario
+import hashlib
 
 router = APIRouter(
     prefix="/api",
@@ -9,17 +12,22 @@ router = APIRouter(
 )
 
 
-def validar_contraseña(contraseña: str) -> bool:
-    """Valida que la contraseña tenga una longitud mínima de 6 caracteres"""
-    return len(contraseña) >= 6
+def hash_password(password: str) -> str:
+    """Hash de contraseña con SHA256"""
+    return hashlib.sha256(password.encode()).hexdigest()
+
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verifica que la contraseña coincida con el hash"""
+    return hash_password(plain_password) == hashed_password
 
 
 @router.post("/cambiar-contraseña")
-async def cambiar_contraseña(request: CambiarContraseñaRequest):
+async def cambiar_contraseña(request: CambiarContraseñaRequest, db: Session = Depends(get_db)):
     """
-    Cambia la contraseña de un usuario autenticado
+    Cambia la contraseña de un usuario utilizando su email
     """
-    usuario = encontrar_usuario_por_email(request.email)
+    usuario = db.query(Usuario).filter(Usuario.email == request.email).first()
 
     if not usuario:
         raise HTTPException(
@@ -28,14 +36,14 @@ async def cambiar_contraseña(request: CambiarContraseñaRequest):
         )
 
     # Verificar contraseña actual
-    if usuario["contraseña"] != request.contraseña_actual:
+    if not verify_password(request.contraseña_actual, usuario.contraseña):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="La contraseña actual es incorrecta"
         )
 
     # Validar nueva contraseña
-    if not validar_contraseña(request.contraseña_nueva):
+    if len(request.contraseña_nueva) < 6:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="La nueva contraseña debe tener al menos 6 caracteres"
@@ -47,14 +55,15 @@ async def cambiar_contraseña(request: CambiarContraseñaRequest):
             detail="La nueva contraseña no puede ser igual a la anterior"
         )
 
-    # Actualizar contraseña
-    usuario["contraseña"] = request.contraseña_nueva
+    # Actualizar contraseña en la BD
+    usuario.contraseña = hash_password(request.contraseña_nueva)
+    db.commit()
 
     return {
         "mensaje": "Contraseña actualizada exitosamente",
         "usuario": {
-            "id": usuario["id"],
-            "nombre": usuario["nombre"],
-            "email": usuario["email"]
+            "id": usuario.id,
+            "nombre": usuario.nombre,
+            "email": usuario.email
         }
     }
