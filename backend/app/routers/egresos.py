@@ -2,7 +2,7 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from sqlalchemy.orm import Session
 from app.models import RegistrarEgresoRequest, EditarEgresoRequest
-from app.config import get_db
+from app.database import get_db
 from app.orm_models import Usuario, Egreso
 from datetime import datetime
 
@@ -99,7 +99,7 @@ async def obtener_egresos_usuario(email: str, db: Session = Depends(get_db)):
 
 
 @router.put("/egresos/{id_egreso}")
-async def editar_egreso(id_egreso: int, request: EditarEgresoRequest, db: Session = Depends(get_db)):
+async def editar_egreso(id_egreso: str, request: EditarEgresoRequest, db: Session = Depends(get_db)):
     """
     Edita un egreso existente
     """

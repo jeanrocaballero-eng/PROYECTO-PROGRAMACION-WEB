@@ -3,7 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import uuid
-from app.config import Base
+from app.database import Base
 
 
 class Usuario(Base):

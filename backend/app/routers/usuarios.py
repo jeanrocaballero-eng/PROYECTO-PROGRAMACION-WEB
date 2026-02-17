@@ -2,7 +2,7 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from sqlalchemy.orm import Session
 from app.models import CambiarContraseñaRequest
-from app.config import get_db
+from app.database import get_db
 from app.orm_models import Usuario
 import hashlib
 

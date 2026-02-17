@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import auth, egresos, usuarios
-from app.config import engine, Base
+from app.database import engine, Base
 from app.orm_models import Usuario, Egreso
 
 
