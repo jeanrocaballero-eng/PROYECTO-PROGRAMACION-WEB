@@ -4,22 +4,11 @@ from sqlalchemy.orm import Session
 from app.models import CambiarContraseñaRequest
 from app.database import get_db
 from app.orm_models import Usuario
-import hashlib
 
 router = APIRouter(
     prefix="/api",
     tags=["Usuarios"]
 )
-
-
-def hash_password(password: str) -> str:
-    """Hash de contraseña con SHA256"""
-    return hashlib.sha256(password.encode()).hexdigest()
-
-
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verifica que la contraseña coincida con el hash"""
-    return hash_password(plain_password) == hashed_password
 
 
 @router.post("/cambiar-contraseña")
@@ -36,7 +25,7 @@ async def cambiar_contraseña(request: CambiarContraseñaRequest, db: Session = 
         )
 
     # Verificar contraseña actual
-    if not verify_password(request.contraseña_actual, usuario.contraseña):
+    if usuario.contraseña != request.contraseña_actual:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="La contraseña actual es incorrecta"
@@ -56,7 +45,7 @@ async def cambiar_contraseña(request: CambiarContraseñaRequest, db: Session = 
         )
 
     # Actualizar contraseña en la BD
-    usuario.contraseña = hash_password(request.contraseña_nueva)
+    usuario.contraseña = request.contraseña_nueva
     db.commit()
 
     return {

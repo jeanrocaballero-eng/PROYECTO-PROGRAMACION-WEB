@@ -4,22 +4,11 @@ from sqlalchemy.orm import Session
 from app.models import RegistroRequest, LoginRequest
 from app.database import get_db
 from app.orm_models import Usuario
-import hashlib
 
 router = APIRouter(
     prefix="/api",
     tags=["Autenticación"]
 )
-
-
-def hash_password(password: str) -> str:
-    """Hash de contraseña con SHA256"""
-    return hashlib.sha256(password.encode()).hexdigest()
-
-
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verifica que la contraseña coincida con el hash"""
-    return hash_password(plain_password) == hashed_password
 
 
 @router.post("/registro")
@@ -53,7 +42,7 @@ async def registrar_usuario(request: RegistroRequest, db: Session = Depends(get_
     nuevo_usuario = Usuario(
         nombre=request.nombre.strip(),
         email=request.email,
-        contraseña=hash_password(request.contraseña)
+        contraseña=request.contraseña
     )
 
     db.add(nuevo_usuario)
@@ -78,7 +67,7 @@ async def login_usuario(request: LoginRequest, db: Session = Depends(get_db)):
     # Buscar usuario por email
     usuario = db.query(Usuario).filter(Usuario.email == request.email).first()
 
-    if not usuario or not verify_password(request.contraseña, usuario.contraseña):
+    if not usuario or usuario.contraseña != request.contraseña:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Email o contraseña incorrectos"
