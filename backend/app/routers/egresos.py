@@ -1,23 +1,28 @@
-
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends, Query
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from app.models import RegistrarEgresoRequest, EditarEgresoRequest
 from app.database import get_db
 from app.orm_models import Usuario, Egreso
-from datetime import datetime
+from datetime import datetime, timedelta
+import io
+import csv
+
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
 
 router = APIRouter(
     prefix="/api",
     tags=["Egresos"]
 )
 
-
 @router.post("/egresos")
 async def registrar_egreso(request: RegistrarEgresoRequest, db: Session = Depends(get_db)):
     """
     Registra un nuevo egreso para un usuario
     """
-    # Verificar que el usuario existe
     usuario = db.query(Usuario).filter(Usuario.email == request.email).first()
     if not usuario:
         raise HTTPException(
@@ -25,7 +30,6 @@ async def registrar_egreso(request: RegistrarEgresoRequest, db: Session = Depend
             detail="Usuario no encontrado"
         )
 
-    # Validar datos
     if not request.descripcion or len(request.descripcion.strip()) == 0:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -38,7 +42,6 @@ async def registrar_egreso(request: RegistrarEgresoRequest, db: Session = Depend
             detail="El monto debe ser mayor a 0"
         )
 
-    # Crear nuevo egreso
     nuevo_egreso = Egreso(
         usuario_id=usuario.id,
         descripcion=request.descripcion.strip(),
@@ -54,8 +57,8 @@ async def registrar_egreso(request: RegistrarEgresoRequest, db: Session = Depend
     return {
         "mensaje": "Egreso registrado exitosamente",
         "egreso": {
-            "id": nuevo_egreso.id,
-            "usuario_id": nuevo_egreso.usuario_id,
+            "id": str(nuevo_egreso.id),
+            "usuario_id": str(nuevo_egreso.usuario_id),
             "descripcion": nuevo_egreso.descripcion,
             "monto": nuevo_egreso.monto,
             "categoria": nuevo_egreso.categoria,
@@ -80,13 +83,13 @@ async def obtener_egresos_usuario(email: str, db: Session = Depends(get_db)):
 
     return {
         "usuario": {
-            "id": usuario.id,
+            "id": str(usuario.id),
             "nombre": usuario.nombre,
             "email": usuario.email
         },
         "egresos": [
             {
-                "id": e.id,
+                "id": str(e.id),
                 "descripcion": e.descripcion,
                 "monto": e.monto,
                 "categoria": e.categoria,
@@ -94,7 +97,7 @@ async def obtener_egresos_usuario(email: str, db: Session = Depends(get_db)):
             }
             for e in egresos_usuario
         ],
-        "total": sum(e.monto for e in egresos_usuario)
+        "total": float(sum(e.monto for e in egresos_usuario))
     }
 
 
@@ -111,7 +114,6 @@ async def editar_egreso(id_egreso: str, request: EditarEgresoRequest, db: Sessio
             detail="Egreso no encontrado"
         )
 
-    # Actualizar solo los campos proporcionados
     if request.descripcion is not None:
         if len(request.descripcion.strip()) == 0:
             raise HTTPException(
@@ -140,10 +142,151 @@ async def editar_egreso(id_egreso: str, request: EditarEgresoRequest, db: Sessio
     return {
         "mensaje": "Egreso actualizado exitosamente",
         "egreso": {
-            "id": egreso.id,
+            "id": str(egreso.id),
             "descripcion": egreso.descripcion,
             "monto": egreso.monto,
             "categoria": egreso.categoria,
             "fecha": egreso.fecha.isoformat()
         }
     }
+
+@router.delete("/egresos/{id_egreso}")
+async def eliminar_egreso(id_egreso: str, db: Session = Depends(get_db)):
+    """
+    Elimina un egreso por ID
+    """
+    egreso = db.query(Egreso).filter(Egreso.id == id_egreso).first()
+
+    if not egreso:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Egreso no encontrado"
+        )
+
+    db.delete(egreso)
+    db.commit()
+
+    return {"mensaje": "Egreso eliminado exitosamente", "id": id_egreso}
+
+
+@router.get("/egresos/{email}/export")
+async def exportar_egresos(
+    email: str,
+    formato: str = Query("csv", description="csv o pdf"),
+    desde: str | None = Query(None, description="YYYY-MM-DD"),
+    hasta: str | None = Query(None, description="YYYY-MM-DD"),
+    incluir_categoria: bool = Query(True),
+    incluir_descripcion: bool = Query(True),
+    ordenar_desc: bool = Query(False),
+    db: Session = Depends(get_db),
+):
+
+    usuario = db.query(Usuario).filter(Usuario.email == email).first()
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+    q = db.query(Egreso).filter(Egreso.usuario_id == usuario.id)
+
+    if desde:
+        desde_dt = datetime.fromisoformat(desde)  
+        q = q.filter(Egreso.fecha >= desde_dt)
+
+    if hasta:
+        hasta_dt = datetime.fromisoformat(hasta) + timedelta(days=1) - timedelta(microseconds=1)
+        q = q.filter(Egreso.fecha <= hasta_dt)
+
+    if ordenar_desc:
+        q = q.order_by(Egreso.fecha.desc())
+    else:
+        q = q.order_by(Egreso.fecha.asc())
+
+    egresos = q.all()
+
+    formato = formato.lower().strip()
+    if formato not in ["csv", "pdf"]:
+        raise HTTPException(status_code=400, detail="Formato inválido. Use csv o pdf.")
+
+    filename = f"egresos_{usuario.email}.{formato}"
+
+    if formato == "csv":
+        output = io.StringIO()
+        writer = csv.writer(output)
+
+        columnas = ["fecha", "monto"]
+        if incluir_categoria:
+            columnas.append("categoria")
+        if incluir_descripcion:
+            columnas.append("descripcion")
+
+        writer.writerow(columnas)
+
+        for e in egresos:
+            row = [
+                e.fecha.date().isoformat() if e.fecha else "",
+                float(e.monto),
+            ]
+            if incluir_categoria:
+                row.append(e.categoria or "")
+            if incluir_descripcion:
+                row.append(e.descripcion or "")
+            writer.writerow(row)
+
+        output.seek(0)
+        return StreamingResponse(
+            io.BytesIO(output.getvalue().encode("utf-8")),
+            media_type="text/csv; charset=utf-8",
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'}
+        )
+
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    story = []
+
+    story.append(Paragraph("Reporte de Egresos", styles["Title"]))
+    story.append(Paragraph(f"Usuario: {usuario.nombre} ({usuario.email})", styles["Normal"]))
+    story.append(Spacer(1, 12))
+
+    cols = ["Fecha", "Monto (S/.)"]
+    if incluir_categoria:
+        cols.append("Categoría")
+    if incluir_descripcion:
+        cols.append("Descripción")
+
+    data = [cols]
+    total = 0.0
+
+    for e in egresos:
+        total += float(e.monto)
+        row = [
+            e.fecha.date().isoformat() if e.fecha else "",
+            f"{float(e.monto):.2f}",
+        ]
+        if incluir_categoria:
+            row.append(e.categoria or "")
+        if incluir_descripcion:
+            row.append(e.descripcion or "")
+        data.append(row)
+
+    story.append(Paragraph(f"Total: S/ {total:.2f}", styles["Heading3"]))
+    story.append(Spacer(1, 10))
+
+    table = Table(data, hAlign="LEFT")
+    table.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.lightgrey),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+        ("FONTSIZE", (0, 0), (-1, -1), 9),
+        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.whitesmoke, colors.white]),
+    ]))
+
+    story.append(table)
+    doc.build(story)
+
+    buffer.seek(0)
+    return StreamingResponse(
+        buffer,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'}
+    )

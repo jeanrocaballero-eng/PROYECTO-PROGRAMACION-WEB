@@ -1,0 +1,25 @@
+Primero se debe estar seguro de crear la base de datos , de preferencia usar pgAdmin.
+Nos dirigimos a un servidor en pgAdmin, en caso ya tenerlo creo , solo es dar click derecho, Create Database, y crearla
+con el nombre egresos_db.
+
+Luego, en el archivo backend\app\database.py:
+Editar esta linea:
+SQLALCHEMY_DATABASE_URL = "postgresql://egresos:egresos@127.0.0.1:5432/egresos_db"
+
+Cambiar , en caso ser necesario:
+egresos:egresos: El usuario y la contraseña de tu servidor , donde se aloja tu database, cambiar de ser necesario
+@127.0.0.1: El servidor Postgres está corriendo en tu misma laptop, suele ser equivalente a localhost.
+egresos_db: el nombre de tu database recien creada.
+
+Luego de eso, aplicamos ctrl + ñ, y se nos abrira la terminal, nos dirigimos a PROYECTO-PROGRAMACION-WEB\backend> y ejecutamos:
+
+cd backend
+python -m venv .venv
+.\.venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+
+Hay que tener paciencia con el pip install, si es la primera vez que instalas entonces va a demorar un poco
+Luego de eso, nuestro servidor estará levantado y te aparecerá, entre los mensajes: 
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+

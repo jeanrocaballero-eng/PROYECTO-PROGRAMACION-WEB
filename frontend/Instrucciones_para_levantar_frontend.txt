@@ -1,0 +1,7 @@
+aplicamos ctrl + ñ, y se nos abrira la terminal, nos dirigimos a PROYECTO-PROGRAMACION-WEB\frontend> y ejecutamos:
+
+cd frontend
+npm install
+npm run dev
+
+Y con eso nuestro frontend se abrirá y podremos usar la app web.
