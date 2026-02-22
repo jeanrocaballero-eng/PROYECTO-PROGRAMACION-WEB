@@ -52,20 +52,20 @@ function ExportarEgresos() {
   };
 
   return (
-    <div>
+    <div className="min-h-screen">
       <Header titulo="EXPORTAR EGRESOS" tipoUsuario="USER" onLogout={handleLogout} />
 
-      <div className="flex pb-24">
+      <div className="flex flex-col lg:flex-row pb-12 sm:pb-16 md:pb-20 lg:pb-24">
         <Sidebar_user />
 
-        <main className="flex-1 flex justify-center px-4 py-10 pb-24">
-          <div className="border border-gray-300 grid gap-4 grid-cols-1 p-4 w-full max-w-md items-centere">
-            <h2 className="font-bold text-xl text-center">Exportación de egresos</h2>
-            <p>Selecciona el formato y el rango de fechas para generar tu archivo.</p>
+        <main className="flex-1 flex justify-center px-4 sm:px-6 py-6 sm:py-8 md:py-10 pb-12 sm:pb-16 md:pb-20 lg:pb-24">
+          <div className="border border-gray-300 grid gap-3 sm:gap-4 grid-cols-1 p-4 sm:p-6 md:p-8 w-full max-w-sm md:max-w-md items-center">
+            <h2 className="font-bold text-lg sm:text-xl md:text-2xl text-center">Exportación de egresos</h2>
+            <p className="text-sm sm:text-base text-gray-700">Selecciona el formato y el rango de fechas para generar tu archivo.</p>
 
             <div>
-              <div>Formato</div>
-              <div className="mt-2 grid grid-cols-2 gap-3">
+              <div className="text-sm sm:text-base font-medium text-gray-700">Formato</div>
+              <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <label className="border-2 border-gray-300 rounded-xl p-3 flex items-center gap-3 cursor-pointer hover:bg-gray-50 transition">
                   <input
                     type="radio"
@@ -75,7 +75,7 @@ function ExportarEgresos() {
                     onChange={() => setFormato("csv")}
                   />
                   <div>
-                    <div className="font-semibold">CSV</div>
+                    <div className="font-semibold text-sm sm:text-base">CSV</div>
                     <div className="text-xs text-gray-500">Para Excel u otras apps</div>
                   </div>
                 </label>
@@ -89,18 +89,18 @@ function ExportarEgresos() {
                     onChange={() => setFormato("pdf")}
                   />
                   <div>
-                    <div className="font-semibold">PDF</div>
+                    <div className="font-semibold text-sm sm:text-base">PDF</div>
                     <div className="text-xs text-gray-500">Para compartir/imprimir</div>
                   </div>
                 </label>
               </div>
 
-              <div className="mt-4">Rango de fechas</div>
-              <div className="grid grid-cols-2 gap-3 mt-2">
+              <div className="mt-3 sm:mt-4 text-sm sm:text-base font-medium text-gray-700">Rango de fechas</div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
                 <div>
-                  <div className="text-sm text-gray-600">Desde</div>
+                  <div className="text-xs sm:text-sm text-gray-600">Desde</div>
                   <input
-                    className="w-full mt-1 border-2 py-3 rounded border-gray-300 px-4 text-md"
+                    className="w-full mt-1 border-2 py-2 sm:py-3 rounded border-gray-300 px-3 sm:px-4 text-sm sm:text-base"
                     type="date"
                     value={desde}
                     onChange={(e) => setDesde(e.target.value)}
@@ -108,9 +108,9 @@ function ExportarEgresos() {
                 </div>
 
                 <div>
-                  <div className="text-sm text-gray-600">Hasta</div>
+                  <div className="text-xs sm:text-sm text-gray-600">Hasta</div>
                   <input
-                    className="w-full mt-1 border-2 py-3 rounded border-gray-300 px-4 text-md"
+                    className="w-full mt-1 border-2 py-2 sm:py-3 rounded border-gray-300 px-3 sm:px-4 text-sm sm:text-base"
                     type="date"
                     value={hasta}
                     onChange={(e) => setHasta(e.target.value)}
@@ -118,9 +118,9 @@ function ExportarEgresos() {
                 </div>
               </div>
 
-              <div className="mt-4">Opciones</div>
+              <div className="mt-3 sm:mt-4 text-sm sm:text-base font-medium text-gray-700">Opciones</div>
               <div className="mt-2 grid gap-2">
-                <label className="flex items-center gap-2 text-sm">
+                <label className="flex items-center gap-2 text-xs sm:text-sm">
                   <input
                     type="checkbox"
                     checked={incluirCategoria}
@@ -128,7 +128,7 @@ function ExportarEgresos() {
                   />
                   Incluir categoría
                 </label>
-                <label className="flex items-center gap-2 text-sm">
+                <label className="flex items-center gap-2 text-xs sm:text-sm">
                   <input
                     type="checkbox"
                     checked={incluirDescripcion}
@@ -136,7 +136,7 @@ function ExportarEgresos() {
                   />
                   Incluir descripción
                 </label>
-                <label className="flex items-center gap-2 text-sm">
+                <label className="flex items-center gap-2 text-xs sm:text-sm">
                   <input
                     type="checkbox"
                     checked={ordenDesc}
@@ -147,17 +147,17 @@ function ExportarEgresos() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 sm:mt-4">
               <button
                 onClick={handleVolver}
-                className="border-2 border-gray-300 text-black p-2 rounded-3xl font-bold text-sm hover:bg-gray-100 transition text-center"
+                className="border-2 border-gray-300 text-black py-2 sm:py-3 px-4 rounded-3xl font-bold text-sm sm:text-base hover:bg-gray-100 transition text-center"
               >
                 VOLVER
               </button>
 
               <button
                 onClick={handleExportar}
-                className="bg-purple-500 text-white p-2 rounded-3xl font-bold text-sm hover:bg-purple-600 transition text-center"
+                className="bg-purple-500 text-white py-2 sm:py-3 px-4 rounded-3xl font-bold text-sm sm:text-base hover:bg-purple-600 transition text-center"
               >
                 EXPORTAR
               </button>

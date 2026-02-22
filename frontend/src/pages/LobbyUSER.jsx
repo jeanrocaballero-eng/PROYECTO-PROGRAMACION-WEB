@@ -116,7 +116,7 @@ function LobbyUSER() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative min-h-screen">
       <div className={modalEditar ? "blur-sm pointer-events-none" : ""}>
         <Header titulo="MIS EGRESOS" tipoUsuario="USER" onLogout={handleLogout} />
 
@@ -124,40 +124,40 @@ function LobbyUSER() {
       </div>
 
       {modalEditar && (
-        <div className="fixed inset-0 bg-black/35 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
-            <h2 className="text-2xl font-bold mb-6 text-center">Editar Egreso</h2>
+        <div className="fixed inset-0 bg-black/35 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 w-full max-w-sm md:max-w-md">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">Editar Egreso</h2>
 
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <div>
-                <label className="block font-semibold text-gray-700 mb-2">Fecha</label>
+                <label className="block font-semibold text-gray-700 mb-2 text-sm sm:text-base">Fecha</label>
                 <input
                   type="date"
                   name="fecha"
                   value={formData.fecha}
                   onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className="w-full border border-gray-300 rounded-lg px-3 sm:px-4 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-2">Descripción</label>
+                <label className="block font-semibold text-gray-700 mb-2 text-sm sm:text-base">Descripción</label>
                 <input
                   type="text"
                   name="descripcion"
                   value={formData.descripcion}
                   onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className="w-full border border-gray-300 rounded-lg px-3 sm:px-4 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-2">Categoría</label>
+                <label className="block font-semibold text-gray-700 mb-2 text-sm sm:text-base">Categoría</label>
                 <select
                   name="categoria"
                   value={formData.categoria}
                   onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className="w-full border border-gray-300 rounded-lg px-3 sm:px-4 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 >
                   <option value="" disabled>Selecciona una categoría</option>
                   <option value="alimentacion">Alimentación</option>
@@ -172,28 +172,28 @@ function LobbyUSER() {
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-2">Monto (S/.)</label>
+                <label className="block font-semibold text-gray-700 mb-2 text-sm sm:text-base">Monto (S/.)</label>
                 <input
                   type="number"
                   name="monto"
                   value={formData.monto}
                   onChange={handleInputChange}
                   step="0.01"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className="w-full border border-gray-300 rounded-lg px-3 sm:px-4 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 />
               </div>
             </div>
 
-            <div className="flex gap-4 mt-8 pt-6 border-t border-gray-200">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
               <button
                 onClick={handleGuardar}
-                className="flex-1 bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition"
+                className="flex-1 bg-blue-500 text-white py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:bg-blue-600 transition"
               >
                 Guardar
               </button>
               <button
                 onClick={handleCancelar}
-                className="flex-1 bg-gray-400 text-white py-2 rounded-lg font-semibold hover:bg-gray-500 transition"
+                className="flex-1 bg-gray-400 text-white py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:bg-gray-500 transition"
               >
                 Cancelar
               </button>

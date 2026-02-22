@@ -15,14 +15,14 @@ function Formulario_registro({ onRegistro }) {
     
     return (
             <div>
-                <h1 className="font-bold text-2xl text-center">Registro</h1>
-                <p className="mt-4">Proporcione los datos correspondientes</p>
+                <h1 className="font-bold text-xl sm:text-2xl md:text-3xl text-center">Registro</h1>
+                <p className="mt-3 sm:mt-4 text-sm sm:text-base text-gray-700">Proporcione los datos correspondientes</p>
 
                 <form onSubmit={handleRegistro}>
 
-                    <div className="mt-4">Nombre</div>
+                    <div className="mt-3 sm:mt-4 text-sm sm:text-base font-medium text-gray-700">Nombre</div>
                     <input
-                        className="w-full mt-1 border-2 py-3 rounded border-gray-300 px-4"
+                        className="w-full mt-1 border-2 py-2 sm:py-3 rounded border-gray-300 px-3 sm:px-4 text-sm sm:text-base"
                         placeholder="Ingresa tu nombre"
                         type="text"
                         value={nombre}
@@ -33,9 +33,9 @@ function Formulario_registro({ onRegistro }) {
                         }
                     />
 
-                    <div className="mt-4">Correo Electrónico</div>
+                    <div className="mt-3 sm:mt-4 text-sm sm:text-base font-medium text-gray-700">Correo Electrónico</div>
                     <input
-                        className="w-full mt-1 border-2 py-3 rounded border-gray-300 px-4"
+                        className="w-full mt-1 border-2 py-2 sm:py-3 rounded border-gray-300 px-3 sm:px-4 text-sm sm:text-base"
                         placeholder="Ingresa tu correo electrónico"
                         type="email"
                         value={email}
@@ -46,10 +46,10 @@ function Formulario_registro({ onRegistro }) {
                         }
                     />
 
-                    <div className="mt-4">Contraseña</div>
+                    <div className="mt-3 sm:mt-4 text-sm sm:text-base font-medium text-gray-700">Contraseña</div>
                     <div className="relative">
                     <input
-                        className="w-full mt-1 border-2 py-3 rounded border-gray-300 px-4"
+                        className="w-full mt-1 border-2 py-2 sm:py-3 rounded border-gray-300 px-3 sm:px-4 text-sm sm:text-base"
                         placeholder="Ingresa tu contraseña"
                         type={mostrarContraseña ? "text" : "password"}
                         value={contraseña}
@@ -67,14 +67,14 @@ function Formulario_registro({ onRegistro }) {
                         <img 
                             src={mostrarContraseña ? "/imagenes/visto.png" : "/imagenes/no_visto.png"}
                             alt={mostrarContraseña ? "Ocultar" : "Mostrar"}
-                            className="w-5 h-5"
+                            className="w-4 h-4 sm:w-5 sm:h-5"
                         />
                     </button>
                     </div>
 
                 <button
                 type="submit"
-                className="bg-black text-white p-2 rounded-3xl mt-8 font-bold text-sm mb-3 hover:bg-gray-800 transition w-full">
+                className="bg-black text-white py-2 sm:py-3 px-4 rounded-3xl mt-6 sm:mt-8 font-bold text-sm sm:text-base mb-3 hover:bg-gray-800 transition w-full">
                     REGISTRARME
                 </button>
 

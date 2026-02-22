@@ -29,11 +29,11 @@ function SigninPage() {
   }
 
   return (
-    <div>
+    <div className="min-h-screen">
       <Cabecera_para_formularios />
 
-      <div className="flex justify-center mt-20 px-4">
-        <div className="border border-gray-300 grid gap-4 grid-cols-1 p-4 w-full max-w-sm items-center">
+      <div className="flex justify-center mt-8 sm:mt-12 md:mt-16 lg:mt-20 px-4 sm:px-6">
+        <div className="border border-gray-300 grid gap-3 sm:gap-4 grid-cols-1 p-4 sm:p-6 md:p-8 w-full max-w-sm md:max-w-md items-center">
           <Formulario_registro onRegistro={signin} />
           <Mensaje msg={mensajeError} visible={mostrarMensaje} />
         </div>

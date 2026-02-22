@@ -54,29 +54,29 @@ function LoginPage() {
   };
 
   return (
-    <div>
+    <div className="min-h-screen">
       <Cabecera_para_formularios />
 
-      <div className="flex justify-center mt-20 px-4">
-        <div className="border border-gray-300 grid gap-4 grid-cols-1 p-4 w-full max-w-sm items-center">
-          <h1 className="font-bold text-2xl text-center">Iniciar Sesión</h1>
-          <p>Ingresa con tu correo y contraseña</p>
+      <div className="flex justify-center mt-8 sm:mt-12 md:mt-16 lg:mt-20 px-4 sm:px-6">
+        <div className="border border-gray-300 grid gap-3 sm:gap-4 grid-cols-1 p-4 sm:p-6 md:p-8 w-full max-w-sm md:max-w-md items-center">
+          <h1 className="font-bold text-xl sm:text-2xl md:text-3xl text-center">Iniciar Sesión</h1>
+          <p className="text-sm sm:text-base text-gray-700">Ingresa con tu correo y contraseña</p>
 
           <form onSubmit={handleLogin}>
             <div>
-              <div>Correo Electrónico</div>
+              <div className="text-sm sm:text-base font-medium text-gray-700">Correo Electrónico</div>
               <input
-                className="w-full mt-1 border-2 py-3 rounded border-gray-300 placeholder:text-gray-400 px-4 text-md"
+                className="w-full mt-1 border-2 py-2 sm:py-3 rounded border-gray-300 placeholder:text-gray-400 px-3 sm:px-4 text-sm sm:text-base"
                 placeholder="Ingresa tu correo electrónico"
                 type="text"
                 value={correo}
                 onChange={(e) => setCorreo(e.target.value)}
               />
 
-              <div className="mt-4">Contraseña</div>
+              <div className="mt-3 sm:mt-4 text-sm sm:text-base font-medium text-gray-700">Contraseña</div>
               <div className="relative">
                 <input
-                  className="w-full mt-1 border-2 py-3 rounded border-gray-300 placeholder:text-gray-400 px-4 text-md"
+                  className="w-full mt-1 border-2 py-2 sm:py-3 rounded border-gray-300 placeholder:text-gray-400 px-3 sm:px-4 text-sm sm:text-base"
                   placeholder="Ingresa tu contraseña"
                   type={mostrarContraseña ? "text" : "password"}
                   value={contraseña}
@@ -90,7 +90,7 @@ function LoginPage() {
                   <img
                     src={mostrarContraseña ? "/imagenes/visto.png" : "/imagenes/no_visto.png"}
                     alt={mostrarContraseña ? "Ocultar" : "Mostrar"}
-                    className="w-5 h-5"
+                    className="w-4 h-4 sm:w-5 sm:h-5"
                   />
                 </button>
               </div>
@@ -110,13 +110,13 @@ function LoginPage() {
 
             <button
               type="submit"
-              className="bg-black text-white p-2 rounded-3xl font-bold text-sm mb-2 hover:bg-gray-800 transition text-center w-full mt-3"
+              className="bg-black text-white py-2 sm:py-3 px-4 rounded-3xl font-bold text-sm sm:text-base mb-2 hover:bg-gray-800 transition text-center w-full mt-3 sm:mt-4"
             >
               INICIAR SESIÓN
             </button>
           </form>
 
-          <p className="text-sm text-center text-gray-600">
+          <p className="text-xs sm:text-sm text-center text-gray-600">
             ¿No tienes una cuenta?{" "}
             <button
               type="button"
