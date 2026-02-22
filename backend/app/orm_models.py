@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Float, DateTime, ForeignKey
+from sqlalchemy import Column, String, Float, DateTime, ForeignKey, Boolean
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -14,6 +14,7 @@ class Usuario(Base):
     nombre = Column(String(100), nullable=False)
     email = Column(String(100), unique=True, nullable=False, index=True)
     contraseña = Column(String(255), nullable=False)
+    is_admin = Column(Boolean, default=False, nullable=False)
     fecha_creacion = Column(DateTime, default=datetime.utcnow)
 
     # Relación: Un usuario tiene muchos egresos

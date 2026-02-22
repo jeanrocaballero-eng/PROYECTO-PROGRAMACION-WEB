@@ -2,12 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Header from "../components/Header";
 import Navegacion_admin from "../components/Navegacion_admin";
+import authService from "../services/authService";
 
 function LobbyAdmin() {
 
     const navigate = useNavigate();
 
     const handleLogout = () => {
+        authService.logout();
         navigate("/LoginPage");
     };
 

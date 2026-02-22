@@ -116,13 +116,15 @@ function LobbyUSER() {
   };
 
   return (
-    <div>
-      <Header titulo="MIS EGRESOS" tipoUsuario="USER" onLogout={handleLogout} />
+    <div className="relative">
+      <div className={modalEditar ? "blur-sm pointer-events-none" : ""}>
+        <Header titulo="MIS EGRESOS" tipoUsuario="USER" onLogout={handleLogout} />
 
-      <Navegacion_user egresos={egresos} onEditar={handleEditar} onEliminar={handleEliminar} />
+        <Navegacion_user egresos={egresos} onEditar={handleEditar} onEliminar={handleEliminar} />
+      </div>
 
       {modalEditar && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/35 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
             <h2 className="text-2xl font-bold mb-6 text-center">Editar Egreso</h2>
 
@@ -151,13 +153,22 @@ function LobbyUSER() {
 
               <div>
                 <label className="block font-semibold text-gray-700 mb-2">Categoría</label>
-                <input
-                  type="text"
+                <select
                   name="categoria"
                   value={formData.categoria}
                   onChange={handleInputChange}
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                />
+                >
+                  <option value="" disabled>Selecciona una categoría</option>
+                  <option value="alimentacion">Alimentación</option>
+                  <option value="transporte">Transporte</option>
+                  <option value="vivienda">Vivienda</option>
+                  <option value="servicios">Servicios</option>
+                  <option value="educacion">Educación</option>
+                  <option value="salud">Salud</option>
+                  <option value="entretenimiento">Entretenimiento</option>
+                  <option value="otros">Otros</option>
+                </select>
               </div>
 
               <div>

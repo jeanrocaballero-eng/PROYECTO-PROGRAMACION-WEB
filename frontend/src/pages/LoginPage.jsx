@@ -36,7 +36,13 @@ function LoginPage() {
 
     try {
       await authService.login(correo, contraseña);
-      navigate("/LobbyUSER");
+      
+      if (authService.isAdmin()) {
+        navigate("/LobbyAdmin");
+      } else {
+        navigate("/LobbyUSER");
+      }
+      
       setCorreo("");
       setContraseña("");
       setMostrarMensaje(false);

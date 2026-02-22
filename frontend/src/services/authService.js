@@ -5,6 +5,7 @@ const TOKEN_KEY = "AUTH_TOKEN";
 const EMAIL_KEY = "userEmail";
 const NAME_KEY = "userName";
 const ID_KEY = "userId";
+const ADMIN_KEY = "isAdmin";
 
 async function getErrorMessage(res) {
   try {
@@ -20,6 +21,7 @@ function setSession({ token, usuario }) {
   if (usuario?.email) localStorage.setItem(EMAIL_KEY, usuario.email);
   if (usuario?.nombre) localStorage.setItem(NAME_KEY, usuario.nombre);
   if (usuario?.id) localStorage.setItem(ID_KEY, usuario.id);
+  if (usuario?.is_admin !== undefined) localStorage.setItem(ADMIN_KEY, usuario.is_admin.toString());
 }
 
 function clearSession() {
@@ -27,6 +29,7 @@ function clearSession() {
   localStorage.removeItem(EMAIL_KEY);
   localStorage.removeItem(NAME_KEY);
   localStorage.removeItem(ID_KEY);
+  localStorage.removeItem(ADMIN_KEY);
 }
 
 function getToken() {
@@ -35,6 +38,10 @@ function getToken() {
 
 function isAuthenticated() {
   return !!getToken();
+}
+
+function isAdmin() {
+  return localStorage.getItem(ADMIN_KEY) === "true";
 }
 
 async function login(email, contraseña) {
@@ -75,4 +82,5 @@ export default {
   logout,
   getToken,
   isAuthenticated,
+  isAdmin,
 };

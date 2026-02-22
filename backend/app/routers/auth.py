@@ -39,7 +39,8 @@ async def registrar_usuario(request: RegistroRequest, db: Session = Depends(get_
     nuevo_usuario = Usuario(
         nombre=request.nombre.strip(),
         email=request.email,
-        contraseña=hash_password(request.contraseña)
+        contraseña=hash_password(request.contraseña),
+        is_admin=False
     )
 
     db.add(nuevo_usuario)
@@ -49,7 +50,8 @@ async def registrar_usuario(request: RegistroRequest, db: Session = Depends(get_
     token = create_access_token({
         "user_id": str(nuevo_usuario.id),
         "email": nuevo_usuario.email,
-        "nombre": nuevo_usuario.nombre
+        "nombre": nuevo_usuario.nombre,
+        "is_admin": nuevo_usuario.is_admin
     })
 
     return {
@@ -59,6 +61,7 @@ async def registrar_usuario(request: RegistroRequest, db: Session = Depends(get_
             "id": str(nuevo_usuario.id),
             "nombre": nuevo_usuario.nombre,
             "email": nuevo_usuario.email,
+            "is_admin": nuevo_usuario.is_admin,
             "cantidad_egresos": 0
         }
     }
@@ -94,7 +97,8 @@ async def login_usuario(request: LoginRequest, db: Session = Depends(get_db)):
     token = create_access_token({
         "user_id": str(usuario.id),
         "email": usuario.email,
-        "nombre": usuario.nombre
+        "nombre": usuario.nombre,
+        "is_admin": usuario.is_admin
     })
 
     return {
@@ -104,6 +108,7 @@ async def login_usuario(request: LoginRequest, db: Session = Depends(get_db)):
             "id": str(usuario.id),
             "nombre": usuario.nombre,
             "email": usuario.email,
+            "is_admin": usuario.is_admin,
             "cantidad_egresos": cantidad_egresos
         }
     }
