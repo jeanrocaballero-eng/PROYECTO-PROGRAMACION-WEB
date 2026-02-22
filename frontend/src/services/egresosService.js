@@ -1,6 +1,15 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 const API = `${API_BASE}/api`;
 
+function authHeaders() {
+  const token = localStorage.getItem("AUTH_TOKEN");
+  if (!token) return {};
+  return {
+    Authorization: `Bearer ${token}`,
+    "x-token": token,
+  };
+}
+
 async function getErrorMessage(res) {
   try {
     const data = await res.json();
@@ -11,7 +20,9 @@ async function getErrorMessage(res) {
 }
 
 async function listarPorEmail(email) {
-  const res = await fetch(`${API}/egresos/${encodeURIComponent(email)}`);
+  const res = await fetch(`${API}/egresos/${encodeURIComponent(email)}`, {
+    headers: { ...authHeaders() },
+  });
 
   if (!res.ok) {
     throw new Error(await getErrorMessage(res));
@@ -23,7 +34,7 @@ async function listarPorEmail(email) {
 async function crearEgreso(payload) {
   const res = await fetch(`${API}/egresos`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify(payload),
   });
 
@@ -37,7 +48,7 @@ async function crearEgreso(payload) {
 async function actualizarEgreso(id, payload) {
   const res = await fetch(`${API}/egresos/${id}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify(payload),
   });
 
@@ -51,6 +62,7 @@ async function actualizarEgreso(id, payload) {
 async function eliminarEgreso(id) {
   const res = await fetch(`${API}/egresos/${id}`, {
     method: "DELETE",
+    headers: { ...authHeaders() },
   });
 
   if (!res.ok) {

@@ -1,6 +1,15 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 const API = `${API_BASE}/api`;
 
+function authHeaders() {
+  const token = localStorage.getItem("AUTH_TOKEN");
+  if (!token) return {};
+  return {
+    Authorization: `Bearer ${token}`,
+    "x-token": token,
+  };
+}
+
 async function getErrorMessage(res) {
   try {
     const data = await res.json();
@@ -43,7 +52,7 @@ async function exportarEgresos(email, opciones) {
 
   const url = `${API}/egresos/${encodeURIComponent(email)}/export?${params.toString()}`;
 
-  const res = await fetch(url);
+  const res = await fetch(url, { headers: { ...authHeaders() } });
 
   if (!res.ok) {
     throw new Error(await getErrorMessage(res));

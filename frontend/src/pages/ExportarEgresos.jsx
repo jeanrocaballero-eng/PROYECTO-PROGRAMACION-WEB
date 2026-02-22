@@ -3,6 +3,7 @@ import { useState } from "react";
 import Sidebar_user from "../components/Sidebar_user";
 import Header from "../components/Header";
 import fileService from "../services/fileService";
+import authService from "../services/authService";
 
 function ExportarEgresos() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ function ExportarEgresos() {
   const [ordenDesc, setOrdenDesc] = useState(false);
 
   const handleLogout = () => {
+    authService.logout();
     navigate("/LoginPage");
   };
 

@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 import Navegacion_user from "../components/Navegacion_user";
 import Header from "../components/Header";
 import egresosService from "../services/egresosService";
+import authService from "../services/authService";
 
 function LobbyUSER() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("userEmail");
-    localStorage.removeItem("userName");
+    authService.logout();
     navigate("/LoginPage");
   };
 

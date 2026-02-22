@@ -4,6 +4,9 @@ import Sidebar_user from "../components/Sidebar_user";
 import Header from "../components/Header";
 import Mensaje from "../components/Mensaje";
 import egresosService from "../services/egresosService";
+import authService from "../services/authService";
+
+
 
 function RegistrarEgreso() {
   const navigate = useNavigate();
@@ -17,6 +20,7 @@ function RegistrarEgreso() {
   const [mensajeError, setMensajeError] = useState("");
 
   const handleLogout = () => {
+    authService.logout();
     navigate("/LoginPage");
   };
 

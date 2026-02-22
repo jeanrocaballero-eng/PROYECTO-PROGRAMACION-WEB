@@ -13,21 +13,28 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, 
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 
+from app.security import get_current_user
+
 router = APIRouter(
     prefix="/api",
     tags=["Egresos"]
 )
 
+
 @router.post("/egresos")
-async def registrar_egreso(request: RegistrarEgresoRequest, db: Session = Depends(get_db)):
+async def registrar_egreso(
+    request: RegistrarEgresoRequest,
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user),
+):
     """
-    Registra un nuevo egreso para un usuario
+    Registra un nuevo egreso para el usuario autenticado.
+    (Se valida que request.email sea el mismo del token)
     """
-    usuario = db.query(Usuario).filter(Usuario.email == request.email).first()
-    if not usuario:
+    if request.email != current_user.email:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Usuario no encontrado"
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No puedes registrar egresos para otro usuario"
         )
 
     if not request.descripcion or len(request.descripcion.strip()) == 0:
@@ -43,7 +50,7 @@ async def registrar_egreso(request: RegistrarEgresoRequest, db: Session = Depend
         )
 
     nuevo_egreso = Egreso(
-        usuario_id=usuario.id,
+        usuario_id=current_user.id,
         descripcion=request.descripcion.strip(),
         monto=request.monto,
         categoria=request.categoria.strip() if request.categoria else "",
@@ -68,24 +75,27 @@ async def registrar_egreso(request: RegistrarEgresoRequest, db: Session = Depend
 
 
 @router.get("/egresos/{email}")
-async def obtener_egresos_usuario(email: str, db: Session = Depends(get_db)):
+async def obtener_egresos_usuario(
+    email: str,
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user),
+):
     """
-    Obtiene todos los egresos de un usuario
+    Obtiene todos los egresos del usuario autenticado.
     """
-    usuario = db.query(Usuario).filter(Usuario.email == email).first()
-    if not usuario:
+    if email != current_user.email:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Usuario no encontrado"
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No puedes ver egresos de otro usuario"
         )
 
-    egresos_usuario = db.query(Egreso).filter(Egreso.usuario_id == usuario.id).all()
+    egresos_usuario = db.query(Egreso).filter(Egreso.usuario_id == current_user.id).all()
 
     return {
         "usuario": {
-            "id": str(usuario.id),
-            "nombre": usuario.nombre,
-            "email": usuario.email
+            "id": str(current_user.id),
+            "nombre": current_user.nombre,
+            "email": current_user.email
         },
         "egresos": [
             {
@@ -102,32 +112,30 @@ async def obtener_egresos_usuario(email: str, db: Session = Depends(get_db)):
 
 
 @router.put("/egresos/{id_egreso}")
-async def editar_egreso(id_egreso: str, request: EditarEgresoRequest, db: Session = Depends(get_db)):
+async def editar_egreso(
+    id_egreso: str,
+    request: EditarEgresoRequest,
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user),
+):
     """
-    Edita un egreso existente
+    Edita un egreso existente del usuario autenticado.
     """
     egreso = db.query(Egreso).filter(Egreso.id == id_egreso).first()
-
     if not egreso:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Egreso no encontrado"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Egreso no encontrado")
+
+    if str(egreso.usuario_id) != str(current_user.id):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No puedes editar egresos de otro usuario")
 
     if request.descripcion is not None:
         if len(request.descripcion.strip()) == 0:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="La descripción no puede estar vacía"
-            )
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="La descripción no puede estar vacía")
         egreso.descripcion = request.descripcion.strip()
 
     if request.monto is not None:
         if request.monto <= 0:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="El monto debe ser mayor a 0"
-            )
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El monto debe ser mayor a 0")
         egreso.monto = request.monto
 
     if request.categoria is not None:
@@ -150,18 +158,22 @@ async def editar_egreso(id_egreso: str, request: EditarEgresoRequest, db: Sessio
         }
     }
 
+
 @router.delete("/egresos/{id_egreso}")
-async def eliminar_egreso(id_egreso: str, db: Session = Depends(get_db)):
+async def eliminar_egreso(
+    id_egreso: str,
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user),
+):
     """
-    Elimina un egreso por ID
+    Elimina un egreso del usuario autenticado.
     """
     egreso = db.query(Egreso).filter(Egreso.id == id_egreso).first()
-
     if not egreso:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Egreso no encontrado"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Egreso no encontrado")
+
+    if str(egreso.usuario_id) != str(current_user.id):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No puedes eliminar egresos de otro usuario")
 
     db.delete(egreso)
     db.commit()
@@ -179,26 +191,25 @@ async def exportar_egresos(
     incluir_descripcion: bool = Query(True),
     ordenar_desc: bool = Query(False),
     db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user),
 ):
+    """
+    Exporta egresos del usuario autenticado.
+    """
+    if email != current_user.email:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No puedes exportar egresos de otro usuario")
 
-    usuario = db.query(Usuario).filter(Usuario.email == email).first()
-    if not usuario:
-        raise HTTPException(status_code=404, detail="Usuario no encontrado")
-
-    q = db.query(Egreso).filter(Egreso.usuario_id == usuario.id)
+    q = db.query(Egreso).filter(Egreso.usuario_id == current_user.id)
 
     if desde:
-        desde_dt = datetime.fromisoformat(desde)  
+        desde_dt = datetime.fromisoformat(desde)
         q = q.filter(Egreso.fecha >= desde_dt)
 
     if hasta:
         hasta_dt = datetime.fromisoformat(hasta) + timedelta(days=1) - timedelta(microseconds=1)
         q = q.filter(Egreso.fecha <= hasta_dt)
 
-    if ordenar_desc:
-        q = q.order_by(Egreso.fecha.desc())
-    else:
-        q = q.order_by(Egreso.fecha.asc())
+    q = q.order_by(Egreso.fecha.desc() if ordenar_desc else Egreso.fecha.asc())
 
     egresos = q.all()
 
@@ -206,7 +217,7 @@ async def exportar_egresos(
     if formato not in ["csv", "pdf"]:
         raise HTTPException(status_code=400, detail="Formato inválido. Use csv o pdf.")
 
-    filename = f"egresos_{usuario.email}.{formato}"
+    filename = f"egresos_{current_user.email}.{formato}"
 
     if formato == "csv":
         output = io.StringIO()
@@ -244,7 +255,7 @@ async def exportar_egresos(
     story = []
 
     story.append(Paragraph("Reporte de Egresos", styles["Title"]))
-    story.append(Paragraph(f"Usuario: {usuario.nombre} ({usuario.email})", styles["Normal"]))
+    story.append(Paragraph(f"Usuario: {current_user.nombre} ({current_user.email})", styles["Normal"]))
     story.append(Spacer(1, 12))
 
     cols = ["Fecha", "Monto (S/.)"]
