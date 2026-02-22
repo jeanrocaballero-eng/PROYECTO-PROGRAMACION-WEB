@@ -60,3 +60,115 @@ async def cambiar_contraseña(request: CambiarContraseñaRequest, db: Session = 
             "email": usuario.email
         }
     }
+
+from uuid import UUID
+from pydantic import BaseModel
+
+# ==========================
+# SCHEMAS
+# ==========================
+
+class UsuarioCreate(BaseModel):
+    nombre: str
+    email: str
+    contraseña: str
+
+class UsuarioUpdate(BaseModel):
+    nombre: str
+    email: str
+
+
+# ==========================
+# LISTAR USUARIOS
+# ==========================
+
+@router.get("/usuarios")
+def listar_usuarios(db: Session = Depends(get_db)):
+    usuarios = db.query(Usuario).all()
+
+    return [
+        {
+            "id": str(u.id),
+            "nombre": u.nombre,
+            "email": u.email,
+            "fecha_creacion": u.fecha_creacion
+        }
+        for u in usuarios
+    ]
+
+
+# ==========================
+# CREAR USUARIO
+# ==========================
+
+@router.post("/usuarios")
+def crear_usuario(data: UsuarioCreate, db: Session = Depends(get_db)):
+
+    existente = db.query(Usuario).filter(Usuario.email == data.email).first()
+    if existente:
+        raise HTTPException(status_code=400, detail="El email ya está registrado")
+
+    nuevo_usuario = Usuario(
+        nombre=data.nombre,
+        email=data.email,
+        contraseña=hash_password(data.contraseña)
+    )
+
+    db.add(nuevo_usuario)
+    db.commit()
+    db.refresh(nuevo_usuario)
+
+    return {
+        "mensaje": "Usuario creado correctamente",
+        "usuario": {
+            "id": str(nuevo_usuario.id),
+            "nombre": nuevo_usuario.nombre,
+            "email": nuevo_usuario.email
+        }
+    }
+
+
+# ==========================
+# EDITAR USUARIO
+# ==========================
+
+@router.put("/usuarios/{usuario_id}")
+def editar_usuario(usuario_id: UUID, data: UsuarioUpdate, db: Session = Depends(get_db)):
+
+    usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
+
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+    usuario.nombre = data.nombre
+    usuario.email = data.email
+
+    db.commit()
+    db.refresh(usuario)
+
+    return {
+        "mensaje": "Usuario actualizado correctamente",
+        "usuario": {
+            "id": str(usuario.id),
+            "nombre": usuario.nombre,
+            "email": usuario.email
+        }
+    }
+
+
+# ==========================
+# ELIMINAR USUARIO
+# ==========================
+
+@router.delete("/usuarios/{usuario_id}")
+def eliminar_usuario(usuario_id: UUID, db: Session = Depends(get_db)):
+
+    usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
+
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+    db.delete(usuario)
+    db.commit()
+
+    return {"mensaje": "Usuario eliminado correctamente"}
