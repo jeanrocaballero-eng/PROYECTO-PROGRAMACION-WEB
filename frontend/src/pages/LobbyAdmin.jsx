@@ -44,6 +44,8 @@ function LobbyAdmin() {
     // EDITAR
     // ==============================
     const handleEditar = (usuario) => {
+        if (usuario.is_admin) return;
+
         setUsuarioEditando(usuario);
         setFormData({
             nombre: usuario.nombre,
@@ -72,6 +74,9 @@ function LobbyAdmin() {
     // ELIMINAR
     // ==============================
     const handleEliminar = async (id) => {
+        const usuario = usuarios.find((u) => u.id === id);
+        if (usuario?.is_admin) return;
+
         if (!confirm("¿Estás seguro de que deseas eliminar este usuario?")) return;
 
         try {
