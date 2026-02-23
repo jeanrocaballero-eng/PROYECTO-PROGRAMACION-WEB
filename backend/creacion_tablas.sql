@@ -21,3 +21,14 @@ CREATE TABLE egresos (
 );
 
 CREATE INDEX idx_egresos_usuario_id ON egresos(usuario_id);
+
+-- CREACIÓN DE ADMIN
+INSERT INTO usuarios (id, nombre, email, contraseña, is_admin, fecha_creacion)
+VALUES (
+    gen_random_uuid(),
+    'Administrador',
+    'admin@admin.com',
+    'pbkdf2_sha256$120000$0a8a20b128d6d336bb5409a242e18a30$f91cef6cf0caba4f5224b9f2dad531fa1414ded864f2eea118837975c3d5f801',
+    true,
+    NOW()
+);
