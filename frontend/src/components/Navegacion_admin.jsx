@@ -2,14 +2,14 @@ import { useNavigate } from "react-router-dom";
 import VerUsuarios from "./VerUsuarios";
 import Sidebar_admin from "./Sidebar_admin";
 
-function Navegacion_admin({ usuarios, onEditar, onEliminar }) {
+function Navegacion_admin({ usuarios, onEditar, onEliminar, onCrearUsuario }) {
     const navigate = useNavigate();
 
     return (
         <div className="flex flex-col md:flex-row">
             
             {/* Sidebar */}
-            <Sidebar_admin />
+            <Sidebar_admin onCrearUsuario={onCrearUsuario} />
 
             {/* Contenido Principal */}
             <div className="flex-1 flex flex-col">

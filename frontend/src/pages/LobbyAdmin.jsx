@@ -15,13 +15,15 @@ function LobbyAdmin() {
     };
 
     const [modalEditar, setModalEditar] = useState(false);
+    const [modoCrear, setModoCrear] = useState(false);
     const [usuarioEditando, setUsuarioEditando] = useState(null);
     const [usuarios, setUsuarios] = useState([]);
     const [error, setError] = useState("");
 
     const [formData, setFormData] = useState({
         nombre: "",
-        email: ""
+        email: "",
+        contraseña: ""
     });
 
     // ==============================
@@ -44,19 +46,47 @@ function LobbyAdmin() {
     // EDITAR
     // ==============================
     const handleEditar = (usuario) => {
+        if (usuario.is_admin) return;
+
         setUsuarioEditando(usuario);
+        setModoCrear(false);
         setFormData({
             nombre: usuario.nombre,
-            email: usuario.email
+            email: usuario.email,
+            contraseña: ""
+        });
+        setModalEditar(true);
+    };
+
+    const handleCrear = () => {
+        setUsuarioEditando(null);
+        setModoCrear(true);
+        setFormData({
+            nombre: "",
+            email: "",
+            contraseña: ""
         });
         setModalEditar(true);
     };
 
     const handleGuardar = async () => {
         try {
-            await usuariosService.actualizarUsuario(usuarioEditando.id, formData);
+            if (modoCrear) {
+                if (!formData.contraseña) {
+                    setError("Debe ingresar una contraseña");
+                    return;
+                }
+                await usuariosService.crearUsuario({
+                    nombre: formData.nombre,
+                    email: formData.email,
+                    contraseña: formData.contraseña
+                });
+            } else if (usuarioEditando) {
+                await usuariosService.actualizarUsuario(usuarioEditando.id, formData);
+            }
             setModalEditar(false);
             setUsuarioEditando(null);
+            setModoCrear(false);
             cargarUsuarios();
         } catch (err) {
             setError(err.message);
@@ -66,12 +96,26 @@ function LobbyAdmin() {
     const handleCancelar = () => {
         setModalEditar(false);
         setUsuarioEditando(null);
+        setModoCrear(false);
+        setFormData({
+            nombre: "",
+            email: "",
+            contraseña: ""
+        });
+        setFormData({
+            nombre: "",
+            email: "",
+            contraseña: ""
+        });
     };
 
     // ==============================
     // ELIMINAR
     // ==============================
     const handleEliminar = async (id) => {
+        const usuario = usuarios.find((u) => u.id === id);
+        if (usuario?.is_admin) return;
+
         if (!confirm("¿Estás seguro de que deseas eliminar este usuario?")) return;
 
         try {
@@ -91,25 +135,30 @@ function LobbyAdmin() {
     };
 
     return (
-        <div>
-            <Header titulo="LISTA DE USUARIOS" tipoUsuario="ADMIN" onLogout={handleLogout} />
+        <div className="relative">
+            <div className={modalEditar ? "blur-sm pointer-events-none" : ""}>
+                <Header titulo="LISTA DE USUARIOS" tipoUsuario="ADMIN" onLogout={handleLogout} />
 
-            {error && (
-                <div className="bg-red-200 text-red-800 p-2 m-4 rounded">
-                    {error}
-                </div>
-            )}
+                {error && (
+                    <div className="bg-red-200 text-red-800 p-2 m-4 rounded">
+                        {error}
+                    </div>
+                )}
 
-            <Navegacion_admin
-                usuarios={usuarios}
-                onEditar={handleEditar}
-                onEliminar={handleEliminar}
-            />
+                <Navegacion_admin
+                    usuarios={usuarios}
+                    onEditar={handleEditar}
+                    onEliminar={handleEliminar}
+                    onCrearUsuario={handleCrear}
+                />
+            </div>
 
             {modalEditar && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="fixed inset-0 bg-black/35 flex items-center justify-center z-50">
                     <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
-                        <h2 className="text-2xl font-bold mb-6 text-center">Editar Usuario</h2>
+                        <h2 className="text-2xl font-bold mb-6 text-center">
+                            {modoCrear ? "Crear Usuario" : "Editar Usuario"}
+                        </h2>
 
                         <div className="space-y-4">
                             <input
@@ -129,6 +178,17 @@ function LobbyAdmin() {
                                 placeholder="Correo"
                                 className="w-full border rounded px-4 py-2"
                             />
+
+                            {modoCrear && (
+                                <input
+                                    type="password"
+                                    name="contraseña"
+                                    value={formData.contraseña}
+                                    onChange={handleInputChange}
+                                    placeholder="Contraseña"
+                                    className="w-full border rounded px-4 py-2"
+                                />
+                            )}
                         </div>
 
                         <div className="flex gap-4 mt-6">

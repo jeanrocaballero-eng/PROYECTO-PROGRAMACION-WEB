@@ -95,6 +95,9 @@ def listar_usuarios(db: Session = Depends(get_db)):
             "id": str(u.id),
             "nombre": u.nombre,
             "email": u.email,
+            "is_admin": u.is_admin,
+            "rol": "Administrador" if u.is_admin else "Usuario",
+            "estado": "Activo",
             "fecha_creacion": u.fecha_creacion
         }
         for u in usuarios
@@ -115,7 +118,8 @@ def crear_usuario(data: UsuarioCreate, db: Session = Depends(get_db)):
     nuevo_usuario = Usuario(
         nombre=data.nombre,
         email=data.email,
-        contraseña=hash_password(data.contraseña)
+        contraseña=hash_password(data.contraseña),
+        is_admin=False
     )
 
     db.add(nuevo_usuario)
@@ -127,7 +131,11 @@ def crear_usuario(data: UsuarioCreate, db: Session = Depends(get_db)):
         "usuario": {
             "id": str(nuevo_usuario.id),
             "nombre": nuevo_usuario.nombre,
-            "email": nuevo_usuario.email
+            "email": nuevo_usuario.email,
+            "is_admin": nuevo_usuario.is_admin,
+            "rol": "Administrador" if nuevo_usuario.is_admin else "Usuario",
+            "estado": "Activo",
+            "fecha_creacion": nuevo_usuario.fecha_creacion
         }
     }
 
@@ -144,6 +152,9 @@ def editar_usuario(usuario_id: UUID, data: UsuarioUpdate, db: Session = Depends(
     if not usuario:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
+    if usuario.is_admin:
+        raise HTTPException(status_code=403, detail="No se puede editar un usuario administrador")
+
     usuario.nombre = data.nombre
     usuario.email = data.email
 
@@ -155,7 +166,11 @@ def editar_usuario(usuario_id: UUID, data: UsuarioUpdate, db: Session = Depends(
         "usuario": {
             "id": str(usuario.id),
             "nombre": usuario.nombre,
-            "email": usuario.email
+            "email": usuario.email,
+            "is_admin": usuario.is_admin,
+            "rol": "Administrador" if usuario.is_admin else "Usuario",
+            "estado": "Activo",
+            "fecha_creacion": usuario.fecha_creacion
         }
     }
 
@@ -171,6 +186,9 @@ def eliminar_usuario(usuario_id: UUID, db: Session = Depends(get_db)):
 
     if not usuario:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+    if usuario.is_admin:
+        raise HTTPException(status_code=403, detail="No se puede eliminar un usuario administrador")
 
     db.delete(usuario)
     db.commit()
@@ -202,7 +220,7 @@ async def ultimo_acceso_usuarios(
         .order_by(func.max(HistorialAcceso.creado_en).desc())
         .all()
     )
-
+    
     return {
         "items": [
             {

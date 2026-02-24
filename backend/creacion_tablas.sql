@@ -1,3 +1,4 @@
+
 -- Tabla usuarios
 CREATE TABLE usuarios (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -22,6 +23,7 @@ CREATE TABLE egresos (
 
 CREATE INDEX idx_egresos_usuario_id ON egresos(usuario_id);
 
+<<<<<<< HEAD
 -- Tabla para "cambio de contraseña" con PIN de 6 dígitos
 
 CREATE TABLE IF NOT EXISTS cambio_password (
@@ -63,3 +65,14 @@ CREATE TABLE IF NOT EXISTS historial_acceso (
 CREATE INDEX IF NOT EXISTS ix_hist_user_id ON historial_acceso (user_id);
 CREATE INDEX IF NOT EXISTS ix_hist_creado_en ON historial_acceso (creado_en);
 CREATE INDEX IF NOT EXISTS ix_hist_evento ON historial_acceso (evento);
+=======
+-- CREACIÓN DE ADMIN
+INSERT INTO usuarios (id, nombre, email, contraseña, is_admin, fecha_creacion)
+VALUES (
+    gen_random_uuid(),
+    'Administrador',
+    'admin@admin.com',
+    'pbkdf2_sha256$120000$0a8a20b128d6d336bb5409a242e18a30$f91cef6cf0caba4f5224b9f2dad531fa1414ded864f2eea118837975c3d5f801',
+    true,
+    NOW()
+);
