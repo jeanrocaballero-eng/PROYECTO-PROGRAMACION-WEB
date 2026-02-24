@@ -7,6 +7,7 @@ from app.security import verify_password, hash_password
 from app.security import get_current_user
 from app.orm_models import Usuario, HistorialAcceso
 from sqlalchemy import func
+from sqlalchemy.exc import IntegrityError
 
 
 router = APIRouter(
@@ -191,7 +192,14 @@ def eliminar_usuario(usuario_id: UUID, db: Session = Depends(get_db)):
         raise HTTPException(status_code=403, detail="No se puede eliminar un usuario administrador")
 
     db.delete(usuario)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=400,
+            detail="No se pudo eliminar el usuario por registros relacionados"
+        )
 
     return {"mensaje": "Usuario eliminado correctamente"}
 

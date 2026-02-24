@@ -26,7 +26,7 @@ class Egreso(Base):
     __tablename__ = "egresos"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    usuario_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=False)
+    usuario_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id", ondelete="CASCADE"), nullable=False)
     descripcion = Column(String(200), nullable=False)
     monto = Column(Float, nullable=False)
     categoria = Column(String(50), nullable=True)
@@ -39,7 +39,7 @@ class CambioPassword(Base):
     __tablename__ = "cambio_password"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=False, index=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id", ondelete="CASCADE"), nullable=False, index=True)
 
     pin = Column(String(6), nullable=False, index=True)
     expira_en = Column(DateTime, nullable=False)
@@ -50,6 +50,6 @@ class HistorialAcceso(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
 
-    user_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=True, index=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id", ondelete="SET NULL"), nullable=True, index=True)
     email_intentado = Column(String(100), nullable=True)
     creado_en = Column(DateTime, nullable=False, default=datetime.utcnow)

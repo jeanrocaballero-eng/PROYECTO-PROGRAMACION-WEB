@@ -23,7 +23,7 @@ CREATE TABLE egresos (
 
 CREATE INDEX idx_egresos_usuario_id ON egresos(usuario_id);
 
-<<<<<<< HEAD
+
 -- Tabla para "cambio de contraseña" con PIN de 6 dígitos
 
 CREATE TABLE IF NOT EXISTS cambio_password (
