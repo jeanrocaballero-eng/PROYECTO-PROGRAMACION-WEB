@@ -21,3 +21,45 @@ CREATE TABLE egresos (
 );
 
 CREATE INDEX idx_egresos_usuario_id ON egresos(usuario_id);
+
+-- Tabla para "cambio de contraseña" con PIN de 6 dígitos
+
+CREATE TABLE IF NOT EXISTS cambio_password (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL,
+
+  pin CHAR(6) NOT NULL,
+  expira_en TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  usado_tiempo TIMESTAMP WITHOUT TIME ZONE NULL,
+
+  CONSTRAINT fk_cambio_password_user
+    FOREIGN KEY (user_id) REFERENCES usuarios(id)
+    ON DELETE CASCADE,
+
+  -- Asegura que el PIN tenga exactamente 6 dígitos (solo números)
+  CONSTRAINT chk_cambio_password_pin_6dig
+    CHECK (pin ~ '^[0-9]{6}$')
+);
+
+-- Para validar rápido por user_id y/o buscar el PIN
+CREATE INDEX IF NOT EXISTS ix_cambio_password_user_id
+  ON cambio_password (user_id);
+
+CREATE INDEX IF NOT EXISTS ix_cambio_password_pin
+  ON cambio_password (pin);
+
+--tabla historial_accesos--
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE IF NOT EXISTS historial_acceso (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NULL,                 -- null si el login falló y no identificas usuario
+  email_intentado VARCHAR(100) NULL, -- útil para fallidos
+  evento VARCHAR(20) NOT NULL,       -- LOGIN_OK / LOGIN_FAIL
+  creado_en TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc'),
+  CONSTRAINT fk_hist_user FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE SET NULL
+);
+
+CREATE INDEX IF NOT EXISTS ix_hist_user_id ON historial_acceso (user_id);
+CREATE INDEX IF NOT EXISTS ix_hist_creado_en ON historial_acceso (creado_en);
+CREATE INDEX IF NOT EXISTS ix_hist_evento ON historial_acceso (evento);

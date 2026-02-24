@@ -1,9 +1,13 @@
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends, Query
 from sqlalchemy.orm import Session
 from app.models import CambiarContraseñaRequest
 from app.database import get_db
 from app.orm_models import Usuario
 from app.security import verify_password, hash_password
+from app.security import get_current_user
+from app.orm_models import Usuario, HistorialAcceso
+from sqlalchemy import func
+
 
 router = APIRouter(
     prefix="/api",
@@ -172,3 +176,41 @@ def eliminar_usuario(usuario_id: UUID, db: Session = Depends(get_db)):
     db.commit()
 
     return {"mensaje": "Usuario eliminado correctamente"}
+
+# ==========================
+# Hisotorial de accesos
+# ==========================
+@router.get("/admin/ultimo_acceso_usuarios")
+async def ultimo_acceso_usuarios(
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user),
+):
+    if not current_user.is_admin:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="user not found")
+
+    filas = (
+        db.query(
+            Usuario.id.label("user_id"),
+            Usuario.nombre.label("nombre"),
+            Usuario.email.label("email"),
+            func.max(HistorialAcceso.creado_en).label("ultimo_acceso"),
+        )
+        .join(HistorialAcceso, HistorialAcceso.user_id == Usuario.id)
+        .filter(Usuario.is_admin == False)
+        .filter(HistorialAcceso.evento == "LOGIN_OK")
+        .group_by(Usuario.id, Usuario.nombre, Usuario.email)
+        .order_by(func.max(HistorialAcceso.creado_en).desc())
+        .all()
+    )
+
+    return {
+        "items": [
+            {
+                "user_id": str(r.user_id),
+                "nombre": r.nombre,
+                "email": r.email,
+                "ultimo_acceso": r.ultimo_acceso.isoformat() if r.ultimo_acceso else None,
+            }
+            for r in filas
+        ]
+    }

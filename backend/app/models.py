@@ -44,3 +44,11 @@ class UserResponse(BaseModel):
 class MensajeResponse(BaseModel):
     mensaje: str
     codigo: int
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+class ResetPasswordRequest(BaseModel):
+    email: EmailStr
+    pin: str
+    contraseña_nueva: str
