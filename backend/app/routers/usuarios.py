@@ -215,7 +215,6 @@ async def ultimo_acceso_usuarios(
         )
         .join(HistorialAcceso, HistorialAcceso.user_id == Usuario.id)
         .filter(Usuario.is_admin == False)
-        .filter(HistorialAcceso.evento == "LOGIN_OK")
         .group_by(Usuario.id, Usuario.nombre, Usuario.email)
         .order_by(func.max(HistorialAcceso.creado_en).desc())
         .all()

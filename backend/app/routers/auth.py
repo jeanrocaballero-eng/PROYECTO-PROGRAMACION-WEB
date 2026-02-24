@@ -11,7 +11,7 @@ import secrets
 from app.models import RegistroRequest, LoginRequest, ForgotPasswordRequest, ResetPasswordRequest
 from app.orm_models import Usuario, CambioPassword
 from app.security import hash_password
-
+from datetime import datetime
 from fastapi import Request
 from app.orm_models import HistorialAcceso
 router = APIRouter(
@@ -82,17 +82,14 @@ async def login_usuario(request: Request, login: LoginRequest, db: Session = Dep
     """
     ip = request.client.host if request.client else None
     user_agent = request.headers.get("user-agent")
-    email = login.email.strip().lower()
 
+    email = login.email.strip().lower()
     usuario = db.query(Usuario).filter(Usuario.email == email).first()
 
     if not usuario:
         db.add(HistorialAcceso(
             user_id=None,
             email_intentado=email,
-            evento="LOGIN_FAIL",
-            ip=ip,
-            user_agent=user_agent,
             creado_en=datetime.utcnow(),
         ))
         db.commit()
@@ -107,9 +104,6 @@ async def login_usuario(request: Request, login: LoginRequest, db: Session = Dep
         db.add(HistorialAcceso(
             user_id=usuario.id,
             email_intentado=email,
-            evento="LOGIN_FAIL",
-            ip=ip,
-            user_agent=user_agent,
             creado_en=datetime.utcnow(),
         ))
         db.commit()
@@ -135,9 +129,6 @@ async def login_usuario(request: Request, login: LoginRequest, db: Session = Dep
     db.add(HistorialAcceso(
         user_id=usuario.id,
         email_intentado=email,
-        evento="LOGIN_OK",
-        ip=ip,
-        user_agent=user_agent,
         creado_en=datetime.utcnow(),
     ))
     db.commit()

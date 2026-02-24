@@ -52,10 +52,4 @@ class HistorialAcceso(Base):
 
     user_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=True, index=True)
     email_intentado = Column(String(100), nullable=True)
-
-    evento = Column(String(20), nullable=False)  
-
-    ip = Column(String(45), nullable=True)
-    user_agent = Column(String, nullable=True)
-
     creado_en = Column(DateTime, nullable=False, default=datetime.utcnow)
