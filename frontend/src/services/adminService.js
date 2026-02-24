@@ -10,7 +10,7 @@ function authHeaders() {
 }
 
 export async function getUltimoAccesoUsuarios() {
-  const res = await fetch(`${API_BASE}/api/admin/ultimo-acceso-usuarios`, {
+  const res = await fetch(`${API_BASE}/api/admin/ultimo_acceso_usuarios`, {
     method: "GET",
     headers: authHeaders(),
   });

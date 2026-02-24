@@ -33,7 +33,6 @@ function HistorialAdmin() {
                 <th className="border p-2 text-left">Usuario</th>
                 <th className="border p-2 text-left">Correo</th>
                 <th className="border p-2 text-center">Último acceso</th>
-                <th className="border p-2 text-center">Acciones</th>
               </tr>
             </thead>
 
@@ -44,14 +43,6 @@ function HistorialAdmin() {
                   <td className="border p-2">{u.email}</td>
                   <td className="border p-2 text-center">
                     {u.ultimo_acceso ? new Date(u.ultimo_acceso).toLocaleString() : "Nunca"}
-                  </td>
-                  <td className="border p-2 text-center">
-                    <button
-                      className="bg-blue-500 text-white px-3 py-1 rounded"
-                      onClick={() => navigate(`/detalle-usuario/${u.user_id}`)}
-                    >
-                      Ver
-                    </button>
                   </td>
                 </tr>
               ))}
