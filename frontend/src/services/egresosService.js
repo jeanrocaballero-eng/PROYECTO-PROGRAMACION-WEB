@@ -72,9 +72,20 @@ async function eliminarEgreso(id) {
   return res.json();
 }
 
+export async function misEgresosPorDia(ordenar_desc = true) {
+  const res = await fetch(`${API_BASE}/api/egresos/mis_egresos?ordenar_desc=${ordenar_desc}`, {
+    method: "GET",
+    headers: authHeaders(),
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.detail || "Error al cargar egresos");
+  return data; // { items: [...] }
+}
 export default {
   listarPorEmail,
   crearEgreso,
   actualizarEgreso,
   eliminarEgreso,
+  misEgresosPorDia
 };
