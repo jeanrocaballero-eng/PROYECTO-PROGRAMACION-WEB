@@ -5,6 +5,7 @@ from app.models import RegistrarEgresoRequest, EditarEgresoRequest
 from app.database import get_db
 from app.orm_models import Usuario, Egreso
 from datetime import datetime, timedelta
+from collections import OrderedDict
 import io
 import csv
 
@@ -71,6 +72,48 @@ async def registrar_egreso(
             "categoria": nuevo_egreso.categoria,
             "fecha": nuevo_egreso.fecha.isoformat()
         }
+    }
+
+@router.get("/egresos/mis_egresos")
+async def mis_egresos_por_dia(
+    ordenar_desc: bool = Query(True, description="True = más recientes primero"),
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user),
+):
+    q = db.query(Egreso).filter(Egreso.usuario_id == current_user.id)
+    q = q.order_by(Egreso.fecha.desc() if ordenar_desc else Egreso.fecha.asc())
+    egresos = q.all()
+
+    grupos = OrderedDict()  
+    total_monto = 0.0
+
+    for e in egresos:
+        dia = e.fecha.date().isoformat() if e.fecha else "sin-fecha"
+        if dia not in grupos:
+            grupos[dia] = {"dia": dia, "total_dia": 0.0, "egresos": []}
+
+        item = {
+            "id": str(e.id),
+            "descripcion": e.descripcion,
+            "monto": float(e.monto),
+            "categoria": e.categoria,
+            "fecha": e.fecha.isoformat() if e.fecha else None,
+        }
+
+        grupos[dia]["egresos"].append(item)
+        grupos[dia]["total_dia"] += float(e.monto)
+        total_monto += float(e.monto)
+
+    return {
+        "usuario": {
+            "id": str(current_user.id),
+            "nombre": current_user.nombre,
+            "email": current_user.email,
+        },
+        "total_egresos": len(egresos),
+        "total_monto": float(total_monto),
+        "items": list(grupos.values()),
+        "orden": "desc" if ordenar_desc else "asc",
     }
 
 
@@ -301,3 +344,4 @@ async def exportar_egresos(
         media_type="application/pdf",
         headers={"Content-Disposition": f'attachment; filename="{filename}"'}
     )
+

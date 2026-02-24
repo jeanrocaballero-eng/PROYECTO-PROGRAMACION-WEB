@@ -76,6 +76,30 @@ function logout() {
   clearSession();
 }
 
+export async function forgotPassword(email) {
+  const res = await fetch(`${API_BASE}/api/forgot-password`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.detail || data.mensaje || "Error al solicitar PIN");
+  return data; 
+}
+
+export async function resetPassword(email, pin, contraseña_nueva) {
+  const res = await fetch(`${API_BASE}/api/reset-password`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, pin, contraseña_nueva }),
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.detail || data.mensaje || "Error al restablecer contraseña");
+  return data;
+}
+
 export default {
   login,
   register,
@@ -83,4 +107,6 @@ export default {
   getToken,
   isAuthenticated,
   isAdmin,
+  forgotPassword,
+  resetPassword
 };

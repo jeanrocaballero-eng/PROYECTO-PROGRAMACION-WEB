@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Navegacion_user from "../components/Navegacion_user";
 import Header from "../components/Header";
-import egresosService from "../services/egresosService";
+import egresosService, { misEgresosPorDia } from "../services/egresosService";
 import authService from "../services/authService";
 
 function LobbyUSER() {
@@ -33,9 +33,11 @@ function LobbyUSER() {
     }
 
     try {
-      const data = await egresosService.listarPorEmail(userEmail);
+      // NUEVO: traer agrupado por día y aplanar para no cambiar el diseño
+      const data = await misEgresosPorDia(true);
+      const plano = (data.items || []).flatMap((d) => d.egresos || []);
 
-      const lista = (data.egresos || []).map((e) => ({
+      const lista = (plano || []).map((e) => ({
         ...e,
         fecha: e.fecha ? e.fecha.slice(0, 10) : "",
         monto: typeof e.monto === "number" ? e.monto : parseFloat(e.monto),

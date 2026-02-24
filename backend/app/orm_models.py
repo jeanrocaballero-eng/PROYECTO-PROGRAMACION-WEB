@@ -34,3 +34,22 @@ class Egreso(Base):
 
     # Relación: Cada egreso pertenece a un usuario
     usuario = relationship("Usuario", back_populates="egresos")
+
+class CambioPassword(Base):
+    __tablename__ = "cambio_password"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=False, index=True)
+
+    pin = Column(String(6), nullable=False, index=True)
+    expira_en = Column(DateTime, nullable=False)
+    usado_tiempo = Column(DateTime, nullable=True)
+
+class HistorialAcceso(Base):
+    __tablename__ = "historial_acceso"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+
+    user_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=True, index=True)
+    email_intentado = Column(String(100), nullable=True)
+    creado_en = Column(DateTime, nullable=False, default=datetime.utcnow)
