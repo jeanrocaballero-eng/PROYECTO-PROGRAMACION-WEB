@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-function Sidebar_admin() {
+function Sidebar_admin({ onCrearUsuario }) {
     const navigate = useNavigate();
 
     return (
@@ -8,7 +8,7 @@ function Sidebar_admin() {
             <nav className="space-y-3">
 
                 <button 
-                    onClick={() => navigate("/GestionUsuarios")}
+                    onClick={onCrearUsuario}
                     className="w-full bg-linear-to-r from-black to-gray-800 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-lg shadow-md hover:shadow-lg hover:from-gray-800 hover:to-gray-900 transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-base">
                     CREAR USUARIO
                 </button>
