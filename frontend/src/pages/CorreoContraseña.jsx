@@ -1,61 +1,98 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Cabecera_para_formularios from "../components/Cabecera_registro";
-import Mensaje from "../components/Mensaje";
+import { forgotPassword } from "../services/authService";
 
-function CorreoContraseña() {
-    const navigate = useNavigate();
+export default function CorreoContraseña() {
+  const navigate = useNavigate();
 
-    const [correoElectronico, setCorreoElectronico] = useState("");
-    const [mostrarMensaje, setMostrarMensaje] = useState(false);
+  const [email, setEmail] = useState("");
+  const [mensaje, setMensaje] = useState("");
+  const [pin, setPin] = useState("");
+  const [expiraEn, setExpiraEn] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-    const handleEnviarCodigo = (e) => {
-        e.preventDefault();
-        if (correoElectronico.trim() === "" || !correoElectronico.includes("@")) {
-            setMostrarMensaje(true);
-            setTimeout(() => setMostrarMensaje(false), 3000);
-            return;
-        }
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setMensaje("");
+    setPin("");
+    setExpiraEn("");
 
-        navigate("/CambiarContraseña2");
-    };
+    const emailClean = email.trim().toLowerCase();
+    if (!emailClean) {
+      setError("Ingresa tu correo.");
+      return;
+    }
 
-    return (
-        <div className="min-h-screen">
-            <Cabecera_para_formularios />
+    try {
+      setLoading(true);
+      const data = await forgotPassword(emailClean);
+      setMensaje(data?.mensaje || "Listo. Si el correo está registrado, se generó un PIN.");
 
-            <div className="flex justify-center mt-8 sm:mt-12 md:mt-16 lg:mt-20 px-4 sm:px-6">
-                <div className="border border-gray-300 grid gap-3 sm:gap-4 grid-cols-1 p-4 sm:p-6 md:p-8 w-full max-w-sm md:max-w-md items-center">
+      if (data?.pin) setPin(data.pin);
+      if (data?.expira_en) setExpiraEn(data.expira_en);
+    } catch (err) {
+      setError(err?.message || "Ocurrió un error.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-                    <h1 className="font-bold text-xl sm:text-2xl md:text-3xl text-center">
-                        Cambio de contraseña con correo
-                    </h1>
+  const irAReset = () => {
+    navigate("/CambiarContraseña", { state: { email: email.trim().toLowerCase() } });
+  };
 
-                    <form onSubmit={handleEnviarCodigo}>
-                    <div>
-                        <div className="text-sm sm:text-base font-medium text-gray-700">Ingrese su correo electrónico</div>
+  return (
+    <div style={{ maxWidth: 420, margin: "40px auto", padding: 16 }}>
+      <h2>Olvidé mi contraseña</h2>
+      <p>Ingresa tu correo para generar un PIN de restablecimiento.</p>
 
-                        <input 
-                            className="w-full mt-2 sm:mt-3 border-2 py-2 sm:py-3 rounded border-gray-300 placeholder:text-gray-400 px-3 sm:px-4 text-sm sm:text-base"
-                            placeholder="Correo electrónico"
-                            value={correoElectronico}
-                            onChange={(e) => setCorreoElectronico(e.target.value)}
-                        />
-                    </div>
-                    <Mensaje msg="Debe ingresar un correo electrónico" visible={mostrarMensaje}/>
+      <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
+        <label>
+          Correo
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="correo@ejemplo.com"
+            style={{ width: "100%", padding: 10, marginTop: 6 }}
+            required
+          />
+        </label>
 
-                    <button 
-                        type="submit"
-                        className="bg-black text-white py-2 sm:py-3 px-4 rounded-3xl font-bold text-sm sm:text-base mb-2 hover:bg-gray-800 transition text-center w-full mt-3 sm:mt-4"
-                    >
-                        Enviar Código
-                    </button>
-                    </form>
+        <button type="submit" disabled={loading} style={{ padding: 10 }}>
+          {loading ? "Generando..." : "Generar PIN"}
+        </button>
+      </form>
 
-                </div>
+      {error ? (
+        <div style={{ marginTop: 12, color: "crimson" }}>{error}</div>
+      ) : null}
+
+      {mensaje ? (
+        <div style={{ marginTop: 12, padding: 12, border: "1px solid #ddd", borderRadius: 8 }}>
+          <div style={{ marginBottom: 8 }}>{mensaje}</div>
+
+          {pin ? (
+            <div style={{ marginBottom: 8 }}>
+              <strong>PIN (modo nota):</strong> <span style={{ letterSpacing: 2 }}>{pin}</span>
             </div>
-        </div>
-    );
-}
+          ) : null}
 
-export default CorreoContraseña;
+          {expiraEn ? (
+            <div style={{ fontSize: 12, opacity: 0.8 }}>
+              Expira en: {expiraEn}
+            </div>
+          ) : null}
+
+          <div style={{ marginTop: 12, display: "flex", gap: 8 }}>
+            <button type="button" onClick={irAReset} style={{ padding: 10, flex: 1 }}>
+              Ir a cambiar contraseña
+            </button>
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+}
