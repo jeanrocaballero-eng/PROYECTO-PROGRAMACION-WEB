@@ -6,6 +6,7 @@ const EMAIL_KEY = "userEmail";
 const NAME_KEY = "userName";
 const ID_KEY = "userId";
 const ADMIN_KEY = "isAdmin";
+const BUDGET_KEY = "userBudget";
 
 async function getErrorMessage(res) {
   try {
@@ -22,6 +23,9 @@ function setSession({ token, usuario }) {
   if (usuario?.nombre) localStorage.setItem(NAME_KEY, usuario.nombre);
   if (usuario?.id) localStorage.setItem(ID_KEY, usuario.id);
   if (usuario?.is_admin !== undefined) localStorage.setItem(ADMIN_KEY, usuario.is_admin.toString());
+  if (usuario?.presupuesto_mensual !== undefined) {
+    localStorage.setItem(BUDGET_KEY, String(usuario.presupuesto_mensual));
+  }
 }
 
 function clearSession() {
@@ -30,6 +34,7 @@ function clearSession() {
   localStorage.removeItem(NAME_KEY);
   localStorage.removeItem(ID_KEY);
   localStorage.removeItem(ADMIN_KEY);
+  localStorage.removeItem(BUDGET_KEY);
 }
 
 function getToken() {
@@ -58,11 +63,11 @@ async function login(email, contraseña) {
   return data;
 }
 
-async function register(nombre, email, contraseña) {
+async function register(nombre, email, contraseña, presupuesto_mensual) {
   const res = await fetch(`${API}/registro`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ nombre, email, contraseña }),
+    body: JSON.stringify({ nombre, email, contraseña, presupuesto_mensual }),
   });
 
   if (!res.ok) throw new Error(await getErrorMessage(res));

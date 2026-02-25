@@ -28,6 +28,7 @@ Pygments==2.19.2
 python-dotenv==1.2.1
 python-multipart==0.0.22
 PyYAML==6.0.3
+reportlab
 rich==14.3.3
 rich-toolkit==0.19.7
 rignore==0.7.6

@@ -48,6 +48,7 @@ async def registrar_usuario(request: RegistroRequest, db: Session = Depends(get_
         nombre=request.nombre.strip(),
         email=request.email,
         contraseña=hash_password(request.contraseña),
+        presupuesto_mensual=request.presupuesto_mensual if (request.presupuesto_mensual and request.presupuesto_mensual > 0) else 0,
         is_admin=False
     )
 
@@ -69,6 +70,7 @@ async def registrar_usuario(request: RegistroRequest, db: Session = Depends(get_
             "id": str(nuevo_usuario.id),
             "nombre": nuevo_usuario.nombre,
             "email": nuevo_usuario.email,
+            "presupuesto_mensual": nuevo_usuario.presupuesto_mensual,
             "is_admin": nuevo_usuario.is_admin,
             "cantidad_egresos": 0
         }
@@ -140,6 +142,7 @@ async def login_usuario(request: Request, login: LoginRequest, db: Session = Dep
             "id": str(usuario.id),
             "nombre": usuario.nombre,
             "email": usuario.email,
+            "presupuesto_mensual": usuario.presupuesto_mensual,
             "is_admin": usuario.is_admin,
             "cantidad_egresos": cantidad_egresos
         }

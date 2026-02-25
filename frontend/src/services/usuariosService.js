@@ -90,9 +90,27 @@ async function eliminarUsuario(id) {
   return res.json();
 }
 
+async function actualizarMiPresupuesto(presupuestoMensual) {
+  const res = await fetch(`${API}/usuarios/mi-presupuesto`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(),
+    },
+    body: JSON.stringify({ presupuesto_mensual: presupuestoMensual }),
+  });
+
+  if (!res.ok) {
+    throw new Error(await getErrorMessage(res));
+  }
+
+  return res.json();
+}
+
 export default {
   listarUsuarios,
   crearUsuario,
   actualizarUsuario,
   eliminarUsuario,
+  actualizarMiPresupuesto,
 };

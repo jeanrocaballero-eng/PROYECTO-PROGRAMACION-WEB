@@ -77,10 +77,33 @@ class UsuarioCreate(BaseModel):
     nombre: str
     email: str
     contraseña: str
+    presupuesto_mensual: float = 0
 
 class UsuarioUpdate(BaseModel):
     nombre: str
     email: str
+
+class PresupuestoMensualUpdate(BaseModel):
+    presupuesto_mensual: float
+
+
+@router.put("/usuarios/mi-presupuesto")
+def actualizar_mi_presupuesto(
+    data: PresupuestoMensualUpdate,
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user),
+):
+    if data.presupuesto_mensual <= 0:
+        raise HTTPException(status_code=400, detail="El presupuesto mensual debe ser mayor a 0")
+
+    current_user.presupuesto_mensual = data.presupuesto_mensual
+    db.commit()
+    db.refresh(current_user)
+
+    return {
+        "mensaje": "Presupuesto mensual actualizado",
+        "presupuesto_mensual": current_user.presupuesto_mensual,
+    }
 
 
 # ==========================
@@ -96,6 +119,7 @@ def listar_usuarios(db: Session = Depends(get_db)):
             "id": str(u.id),
             "nombre": u.nombre,
             "email": u.email,
+            "presupuesto_mensual": u.presupuesto_mensual,
             "is_admin": u.is_admin,
             "rol": "Administrador" if u.is_admin else "Usuario",
             "estado": "Activo",
@@ -120,6 +144,7 @@ def crear_usuario(data: UsuarioCreate, db: Session = Depends(get_db)):
         nombre=data.nombre,
         email=data.email,
         contraseña=hash_password(data.contraseña),
+        presupuesto_mensual=data.presupuesto_mensual if data.presupuesto_mensual > 0 else 0,
         is_admin=False
     )
 
@@ -133,6 +158,7 @@ def crear_usuario(data: UsuarioCreate, db: Session = Depends(get_db)):
             "id": str(nuevo_usuario.id),
             "nombre": nuevo_usuario.nombre,
             "email": nuevo_usuario.email,
+            "presupuesto_mensual": nuevo_usuario.presupuesto_mensual,
             "is_admin": nuevo_usuario.is_admin,
             "rol": "Administrador" if nuevo_usuario.is_admin else "Usuario",
             "estado": "Activo",
@@ -168,6 +194,7 @@ def editar_usuario(usuario_id: UUID, data: UsuarioUpdate, db: Session = Depends(
             "id": str(usuario.id),
             "nombre": usuario.nombre,
             "email": usuario.email,
+            "presupuesto_mensual": usuario.presupuesto_mensual,
             "is_admin": usuario.is_admin,
             "rol": "Administrador" if usuario.is_admin else "Usuario",
             "estado": "Activo",

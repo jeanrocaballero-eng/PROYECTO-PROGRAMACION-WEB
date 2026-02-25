@@ -14,6 +14,7 @@ class Usuario(Base):
     nombre = Column(String(100), nullable=False)
     email = Column(String(100), unique=True, nullable=False, index=True)
     contraseña = Column(String(255), nullable=False)
+    presupuesto_mensual = Column(Float, nullable=False, default=0)
     is_admin = Column(Boolean, default=False, nullable=False)
     fecha_creacion = Column(DateTime, default=datetime.utcnow)
 
